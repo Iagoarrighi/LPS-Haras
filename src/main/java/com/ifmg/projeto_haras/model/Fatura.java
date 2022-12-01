@@ -3,16 +3,20 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.ifmg.projeto_haras.model;
-
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.Data;
 /**
  *
  * @author iago_
  */
-public class Fatura {
-    
 @Data
 @Entity
-    
+
+public class Fatura {
+      
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
