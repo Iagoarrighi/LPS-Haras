@@ -10,4 +10,22 @@ package com.ifmg.projeto_haras.model;
  */
 public class Fatura {
     
+@Data
+@Entity
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private Boolean foiPaga;
+    
+    
+    public Fatura(){
+        this.id = -1;
+        this.foiPaga = false;
+    }
+    
+    public Fatura(Boolean foiPaga){
+        this.id = null;
+        this.foiPaga = foiPaga;
+    }
 }
