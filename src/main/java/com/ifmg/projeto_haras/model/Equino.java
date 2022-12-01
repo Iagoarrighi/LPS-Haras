@@ -4,10 +4,13 @@
  */
 package com.ifmg.projeto_haras.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import java.time.LocalDate;
 import lombok.Data;
 
@@ -25,6 +28,15 @@ public class Equino {
     private char sexo;
     private String raca;
     private LocalDate nascimento;
+    
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Proprietario proprietario;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Cuidador cuidador;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Veterinario veterinario;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Baia baia;
     
     public Equino(){
         this.id = -1;

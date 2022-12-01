@@ -8,6 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import lombok.Data;
 
 /**
@@ -23,6 +24,8 @@ public class Baia {
     private Integer id;
     private Double tamanho;
     private String tipo;
+    @OneToOne(mappedBy = "baia")
+    private Equino equino;
     
     public Baia(){
         this.id = -1;

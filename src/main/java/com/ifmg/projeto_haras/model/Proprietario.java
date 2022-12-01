@@ -5,6 +5,7 @@
 package com.ifmg.projeto_haras.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import lombok.Data;
 
@@ -17,6 +18,9 @@ import lombok.Data;
 @PrimaryKeyJoinColumn(name = "id")
 public class Proprietario extends Pessoa {
     private String cpf;
+    
+    @OneToOne(mappedBy = "proprietario")
+    private Fatura fatura;
     
     public Proprietario(){
         super();

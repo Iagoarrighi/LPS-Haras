@@ -3,10 +3,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.ifmg.projeto_haras.model;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import lombok.Data;
 /**
  *
@@ -21,6 +23,8 @@ public class Fatura {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Boolean foiPaga;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Proprietario proprietario;
     
     
     public Fatura(){
