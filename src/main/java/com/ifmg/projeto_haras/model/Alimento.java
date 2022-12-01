@@ -8,6 +8,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Data;
 
 /**
@@ -23,11 +26,15 @@ public class Alimento {
     private Integer id;
     private String nome;
     private Double preco;
+    @ManyToMany(mappedBy = "alimentos")
+    private List<Equino> equinos = new ArrayList<>();
+    
     
     public Alimento(){
         this.id = -1;
         this.nome = "";
         this.preco = -1.0;
+
     }
     
     public Alimento(String nome, Double preco){

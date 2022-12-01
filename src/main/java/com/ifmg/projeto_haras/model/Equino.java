@@ -9,9 +9,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Data;
 
 /**
@@ -37,6 +42,11 @@ public class Equino {
     private Veterinario veterinario;
     @OneToOne(cascade = CascadeType.ALL)
     private Baia baia;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "Equino_Alimento"
+            , joinColumns = @JoinColumn(name = "equino_id")
+            , inverseJoinColumns = @JoinColumn(name = "alimento_id"))
+    private List <Alimento> alimentos = new ArrayList<>();
     
     public Equino(){
         this.id = -1;
@@ -44,6 +54,7 @@ public class Equino {
         this.sexo = '-';
         this.raca = "";
         this.nascimento = null;
+        
     }
 
     public Equino(String nome, char sexo, String raca, LocalDate nascimento) {
