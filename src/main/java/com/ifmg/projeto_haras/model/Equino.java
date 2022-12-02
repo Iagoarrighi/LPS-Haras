@@ -13,16 +13,19 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  *
  * @author gusta
  */
+@EqualsAndHashCode
 @Entity
 @Data
 public class Equino {
@@ -33,6 +36,8 @@ public class Equino {
     private char sexo;
     private String raca;
     private LocalDate nascimento;
+    @OneToMany(mappedBy = "pk.equino", cascade = CascadeType.ALL)
+    private List<EquinoServico> equinosServico = new ArrayList<>();
     
     @ManyToOne(cascade = CascadeType.ALL)
     private Proprietario proprietario;
