@@ -15,7 +15,7 @@ public interface IDao {
     
     public boolean delete(Object obj);
             
-    public Object find(Object obj);
+    public Object find(int id);
         
     public List<Object> findAll();
 }

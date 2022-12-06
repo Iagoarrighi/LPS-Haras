@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @author gusta
  */
-public class AlimentoDAO {
+public class AlimentoDAO implements IDao {
     private EntityManager entityManager;
     private Query qry;
     private String sql;
@@ -24,6 +24,7 @@ public class AlimentoDAO {
     }
 
     
+    @Override
     public void save(Object obj) {
         Alimento alimento = (Alimento) obj;
         this.entityManager.getTransaction().begin();
@@ -36,6 +37,7 @@ public class AlimentoDAO {
     }
 
     
+    @Override
     public boolean delete(Object obj) {
         Alimento alimento = (Alimento) obj;
         this.entityManager.getTransaction().begin();
@@ -44,7 +46,8 @@ public class AlimentoDAO {
         return true;
     }
 
-    public Alimento find(int id) {
+    @Override
+    public Object find(int id) {
         sql = " SELECT a "
                 + " FROM Alimento "
                 + " WHERE id = :id ";
@@ -56,7 +59,7 @@ public class AlimentoDAO {
         if (lst.isEmpty()) {
             return null;
         } else {
-            return (Alimento) lst.get(0);
+            return lst.get(0);
         }
     }
     
@@ -77,6 +80,7 @@ public class AlimentoDAO {
     }
 
     
+    @Override
     public List<Object> findAll() {
         return null;
     }
