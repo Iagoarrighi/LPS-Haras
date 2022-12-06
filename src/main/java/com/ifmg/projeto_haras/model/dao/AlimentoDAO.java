@@ -49,7 +49,7 @@ public class AlimentoDAO implements IDao {
     @Override
     public Object find(int id) {
         sql = " SELECT a "
-                + " FROM Alimento "
+                + " FROM Alimento a "
                 + " WHERE id = :id ";
 
         qry = this.entityManager.createQuery(sql);
@@ -82,7 +82,13 @@ public class AlimentoDAO implements IDao {
     
     @Override
     public List<Object> findAll() {
-        return null;
+        sql = " SELECT a "
+                + " FROM Alimento a ";
+
+        qry = this.entityManager.createQuery(sql);
+        
+        List lst = qry.getResultList();
+        return lst;
     }
     
     
