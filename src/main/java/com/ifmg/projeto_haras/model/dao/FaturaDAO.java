@@ -5,7 +5,7 @@
 package com.ifmg.projeto_haras.model.dao;
 
 import com.ifmg.projeto_haras.factory.Database;
-import com.ifmg.projeto_haras.model.Baia;
+import com.ifmg.projeto_haras.model.Fatura;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import java.util.List;
@@ -14,46 +14,47 @@ import java.util.List;
  *
  * @author iago_
  */
-public class BaiaDAO implements IDao {
-
+public class FaturaDAO implements IDao {
     private EntityManager entityManager;
     private Query qry;
     private String sql;
-
-    public BaiaDAO() {
+    
+    public FaturaDAO(){
         entityManager = Database.getInstance().getEntityManager();
     }
 
+    
     @Override
     public void save(Object obj) {
-        Baia baia = (Baia) obj;
+        Fatura fatura = (Fatura) obj;
         this.entityManager.getTransaction().begin();
-        if (baia != null) {
-            this.entityManager.merge(baia);
+        if (fatura != null) {
+            this.entityManager.merge(fatura);
         } else {
-            this.entityManager.persist(baia);
+            this.entityManager.persist(fatura);
         }
         this.entityManager.getTransaction().commit();
     }
 
+    
     @Override
     public boolean delete(Object obj) {
-        Baia baia = (Baia) obj;
+        Fatura fatura = (Fatura) obj;
         this.entityManager.getTransaction().begin();
-        this.entityManager.remove(baia);
+        this.entityManager.remove(fatura);
         this.entityManager.getTransaction().commit();
         return true;
     }
 
     @Override
     public Object find(int id) {
-        sql = " SELECT b "
-                + " FROM Baia b "
+        sql = " SELECT f "
+                + " FROM Fatura f "
                 + " WHERE id = :id ";
 
         qry = this.entityManager.createQuery(sql);
         qry.setParameter("id", id);
-
+        
         List lst = qry.getResultList();
         if (lst.isEmpty()) {
             return null;
@@ -61,14 +62,14 @@ public class BaiaDAO implements IDao {
             return lst.get(0);
         }
     }
-
+    
     @Override
     public List<Object> findAll() {
-        sql = " SELECT b "
-                + " FROM Baia b ";
+        sql = " SELECT f "
+                + " FROM fatura f ";
 
         qry = this.entityManager.createQuery(sql);
-
+        
         List lst = qry.getResultList();
         return lst;
     }

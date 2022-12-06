@@ -5,7 +5,7 @@
 package com.ifmg.projeto_haras.model.dao;
 
 import com.ifmg.projeto_haras.factory.Database;
-import com.ifmg.projeto_haras.model.Baia;
+import com.ifmg.projeto_haras.model.ServicoAdicional;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import java.util.List;
@@ -14,46 +14,47 @@ import java.util.List;
  *
  * @author iago_
  */
-public class BaiaDAO implements IDao {
-
+public class ServicoAdicionalDAO implements IDao {
     private EntityManager entityManager;
     private Query qry;
     private String sql;
-
-    public BaiaDAO() {
+    
+    public ServicoAdicionalDAO(){
         entityManager = Database.getInstance().getEntityManager();
     }
 
+    
     @Override
     public void save(Object obj) {
-        Baia baia = (Baia) obj;
+        ServicoAdicional servicoAdicional = (ServicoAdicional) obj;
         this.entityManager.getTransaction().begin();
-        if (baia != null) {
-            this.entityManager.merge(baia);
+        if (servicoAdicional != null) {
+            this.entityManager.merge(servicoAdicional);
         } else {
-            this.entityManager.persist(baia);
+            this.entityManager.persist(servicoAdicional);
         }
         this.entityManager.getTransaction().commit();
     }
 
+    
     @Override
     public boolean delete(Object obj) {
-        Baia baia = (Baia) obj;
+        ServicoAdicional servicoAdicional = (ServicoAdicional) obj;
         this.entityManager.getTransaction().begin();
-        this.entityManager.remove(baia);
+        this.entityManager.remove(servicoAdicional);
         this.entityManager.getTransaction().commit();
         return true;
     }
 
     @Override
     public Object find(int id) {
-        sql = " SELECT b "
-                + " FROM Baia b "
+        sql = " SELECT s "
+                + " FROM ServicoAdicional s "
                 + " WHERE id = :id ";
 
         qry = this.entityManager.createQuery(sql);
         qry.setParameter("id", id);
-
+        
         List lst = qry.getResultList();
         if (lst.isEmpty()) {
             return null;
@@ -61,14 +62,14 @@ public class BaiaDAO implements IDao {
             return lst.get(0);
         }
     }
-
+    
     @Override
     public List<Object> findAll() {
-        sql = " SELECT b "
-                + " FROM Baia b ";
+        sql = " SELECT s "
+                + " FROM ServicoAdicional s ";
 
         qry = this.entityManager.createQuery(sql);
-
+        
         List lst = qry.getResultList();
         return lst;
     }
