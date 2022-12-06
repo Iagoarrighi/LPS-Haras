@@ -4,7 +4,11 @@
  */
 package com.ifmg.projeto_haras.view;
 
+import com.ifmg.projeto_haras.view.gerenciaveis.IFrAlimento;
 import com.ifmg.projeto_haras.view.gerenciaveis.IFrBaia;
+import com.ifmg.projeto_haras.view.gerenciaveis.IFrCuidador;
+import com.ifmg.projeto_haras.view.gerenciaveis.IFrProprietario;
+import com.ifmg.projeto_haras.view.gerenciaveis.IFrVeterinario;
 import javax.swing.JFrame;
 
 /**
@@ -35,14 +39,17 @@ public class FrAdministrador extends javax.swing.JFrame {
         deskPaneAdm = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuAdministrador = new javax.swing.JMenu();
-        mnItemEquinoCad = new javax.swing.JMenuItem();
+        mnItemGerenciarEquino = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        mitemGerenciarProprietario = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
-        jMenuItem4 = new javax.swing.JMenuItem();
+        mitemGerenciarCuidador = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenu5 = new javax.swing.JMenu();
+        mitemGerenciarVeterinario = new javax.swing.JMenuItem();
+        menuBaias = new javax.swing.JMenu();
         mitemGerenciarBaia = new javax.swing.JMenuItem();
+        menuAlimentos = new javax.swing.JMenu();
+        mitemGerenciarAlimento = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -64,34 +71,53 @@ public class FrAdministrador extends javax.swing.JFrame {
 
         menuAdministrador.setText("Equinos");
 
-        mnItemEquinoCad.setText("Cadastro");
-        mnItemEquinoCad.addActionListener(new java.awt.event.ActionListener() {
+        mnItemGerenciarEquino.setText("Gerenciar");
+        mnItemGerenciarEquino.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnItemEquinoCadActionPerformed(evt);
+                mnItemGerenciarEquinoActionPerformed(evt);
             }
         });
-        menuAdministrador.add(mnItemEquinoCad);
+        menuAdministrador.add(mnItemGerenciarEquino);
 
         jMenuBar1.add(menuAdministrador);
 
         jMenu2.setText("Proprietário");
+
+        mitemGerenciarProprietario.setText("Gerenciar");
+        mitemGerenciarProprietario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mitemGerenciarProprietarioActionPerformed(evt);
+            }
+        });
+        jMenu2.add(mitemGerenciarProprietario);
+
         jMenuBar1.add(jMenu2);
 
         jMenu3.setText("Cuidador");
 
-        jMenuItem4.setText("Cadastro");
-        jMenu3.add(jMenuItem4);
+        mitemGerenciarCuidador.setText("Gerenciar");
+        mitemGerenciarCuidador.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mitemGerenciarCuidadorActionPerformed(evt);
+            }
+        });
+        jMenu3.add(mitemGerenciarCuidador);
 
         jMenuBar1.add(jMenu3);
 
         jMenu4.setText("Veterinário");
 
-        jMenuItem2.setText("Cadastro");
-        jMenu4.add(jMenuItem2);
+        mitemGerenciarVeterinario.setText("Gerenciar");
+        mitemGerenciarVeterinario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mitemGerenciarVeterinarioActionPerformed(evt);
+            }
+        });
+        jMenu4.add(mitemGerenciarVeterinario);
 
         jMenuBar1.add(jMenu4);
 
-        jMenu5.setText("Baias");
+        menuBaias.setText("Baias");
 
         mitemGerenciarBaia.setText("Gerenciar");
         mitemGerenciarBaia.addActionListener(new java.awt.event.ActionListener() {
@@ -99,9 +125,21 @@ public class FrAdministrador extends javax.swing.JFrame {
                 mitemGerenciarBaiaActionPerformed(evt);
             }
         });
-        jMenu5.add(mitemGerenciarBaia);
+        menuBaias.add(mitemGerenciarBaia);
 
-        jMenuBar1.add(jMenu5);
+        jMenuBar1.add(menuBaias);
+
+        menuAlimentos.setText("Alimentos");
+
+        mitemGerenciarAlimento.setText("Gerenciar");
+        mitemGerenciarAlimento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mitemGerenciarAlimentoActionPerformed(evt);
+            }
+        });
+        menuAlimentos.add(mitemGerenciarAlimento);
+
+        jMenuBar1.add(menuAlimentos);
 
         setJMenuBar(jMenuBar1);
 
@@ -123,9 +161,9 @@ public class FrAdministrador extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void mnItemEquinoCadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnItemEquinoCadActionPerformed
-
-    }//GEN-LAST:event_mnItemEquinoCadActionPerformed
+    private void mnItemGerenciarEquinoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnItemGerenciarEquinoActionPerformed
+        
+    }//GEN-LAST:event_mnItemGerenciarEquinoActionPerformed
 
     private void mitemGerenciarBaiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitemGerenciarBaiaActionPerformed
         IFrBaia ifrBaia = new IFrBaia();
@@ -137,18 +175,45 @@ public class FrAdministrador extends javax.swing.JFrame {
         this.setExtendedState(MAXIMIZED_BOTH);
     }//GEN-LAST:event_formWindowOpened
 
+    private void mitemGerenciarAlimentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitemGerenciarAlimentoActionPerformed
+        IFrAlimento ifrAlimento = new IFrAlimento();
+        deskPaneAdm.add(ifrAlimento);
+        ifrAlimento.setVisible(true);
+    }//GEN-LAST:event_mitemGerenciarAlimentoActionPerformed
+
+    private void mitemGerenciarVeterinarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitemGerenciarVeterinarioActionPerformed
+        IFrVeterinario ifrVeterinario = new IFrVeterinario();
+        deskPaneAdm.add(ifrVeterinario);
+        ifrVeterinario.setVisible(true);
+    }//GEN-LAST:event_mitemGerenciarVeterinarioActionPerformed
+
+    private void mitemGerenciarCuidadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitemGerenciarCuidadorActionPerformed
+        IFrCuidador ifrCuidador = new IFrCuidador();
+        deskPaneAdm.add(ifrCuidador);
+        ifrCuidador.setVisible(true);
+    }//GEN-LAST:event_mitemGerenciarCuidadorActionPerformed
+
+    private void mitemGerenciarProprietarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitemGerenciarProprietarioActionPerformed
+        IFrProprietario ifrProprietario = new IFrProprietario();
+        deskPaneAdm.add(ifrProprietario);
+        ifrProprietario.setVisible(true);
+    }//GEN-LAST:event_mitemGerenciarProprietarioActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane deskPaneAdm;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
-    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenu menuAdministrador;
+    private javax.swing.JMenu menuAlimentos;
+    private javax.swing.JMenu menuBaias;
+    private javax.swing.JMenuItem mitemGerenciarAlimento;
     private javax.swing.JMenuItem mitemGerenciarBaia;
-    private javax.swing.JMenuItem mnItemEquinoCad;
+    private javax.swing.JMenuItem mitemGerenciarCuidador;
+    private javax.swing.JMenuItem mitemGerenciarProprietario;
+    private javax.swing.JMenuItem mitemGerenciarVeterinario;
+    private javax.swing.JMenuItem mnItemGerenciarEquino;
     // End of variables declaration//GEN-END:variables
 }
