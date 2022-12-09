@@ -62,8 +62,7 @@ public class BaiaDAO implements IDao {
         }
     }
 
-    @Override
-    public List<Object> findAll() {
+    public List<Baia> findAll() {
         sql = " SELECT b "
                 + " FROM Baia b ";
 

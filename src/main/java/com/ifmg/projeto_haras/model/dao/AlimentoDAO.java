@@ -64,8 +64,8 @@ public class AlimentoDAO implements IDao {
     }
     
     public Alimento findByNome(String nome) {
-        sql = " SELECT n "
-                + " FROM Alimento "
+        sql = " SELECT a "
+                + " FROM Alimento a "
                 + " WHERE nome = :nome ";
 
         qry = this.entityManager.createQuery(sql);
@@ -78,10 +78,8 @@ public class AlimentoDAO implements IDao {
             return (Alimento) lst.get(0);
         }
     }
-
-    
-    @Override
-    public List<Object> findAll() {
+ 
+    public List<Alimento> findAll() {
         sql = " SELECT a "
                 + " FROM Alimento a ";
 

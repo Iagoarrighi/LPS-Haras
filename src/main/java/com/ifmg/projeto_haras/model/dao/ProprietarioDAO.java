@@ -63,8 +63,7 @@ public class ProprietarioDAO implements IDao{
         }
     }
     
-    @Override
-    public List<Object> findAll() {
+    public List<Proprietario> findAll() {
         sql = " SELECT p "
                 + " FROM Proprietario p ";
 

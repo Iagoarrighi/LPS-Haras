@@ -24,7 +24,7 @@ public class Cuidador extends Pessoa {
         this.dataInicioContrato = null;
     }
 
-    public Cuidador(LocalDate dataInicioContrato, String nome, String senha, String email) {
+    public Cuidador(String nome, String senha, String email, LocalDate dataInicioContrato) {
         super(nome, senha, email);
         this.dataInicioContrato = dataInicioContrato;
     }

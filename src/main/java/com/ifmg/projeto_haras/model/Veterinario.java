@@ -18,13 +18,14 @@ import lombok.Data;
 public class Veterinario extends Pessoa {
     private String crmv;
 
-    public Veterinario(String crmv) {
-        super();
+
+    public Veterinario(String nome, String senha, String email, String crmv) {
+        super(nome, senha, email);
         this.crmv = crmv;
     }
 
-    public Veterinario(String crmv, String nome, String senha, String email) {
-        super(nome, senha, email);
-        this.crmv = crmv;
+    public Veterinario() {
+        super();
+        this.crmv = "";
     }
 }

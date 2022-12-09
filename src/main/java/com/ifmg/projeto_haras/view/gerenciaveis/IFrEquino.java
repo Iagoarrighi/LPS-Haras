@@ -4,17 +4,126 @@
  */
 package com.ifmg.projeto_haras.view.gerenciaveis;
 
+import com.ifmg.projeto_haras.controller.BaiaController;
+import com.ifmg.projeto_haras.controller.CuidadorController;
+import com.ifmg.projeto_haras.controller.EquinoController;
+import com.ifmg.projeto_haras.controller.ProprietarioController;
+import com.ifmg.projeto_haras.controller.VeterinarioController;
+import com.ifmg.projeto_haras.model.Equino;
+import com.ifmg.projeto_haras.model.Proprietario;
+import com.ifmg.projeto_haras.model.exceptions.EquinoException;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFormattedTextField;
+import javax.swing.JOptionPane;
+import javax.swing.text.MaskFormatter;
+
 /**
  *
  * @author iago_
  */
 public class IFrEquino extends javax.swing.JInternalFrame {
 
+    EquinoController equinoController;
+    BaiaController baiaController;
+    ProprietarioController propController;
+    VeterinarioController veterinarioController;
+    CuidadorController cuidadorController;
+    int idEquinoEditando;
+
     /**
      * Creates new form IFrEquino
      */
     public IFrEquino() {
+
+        equinoController = new EquinoController();
+        baiaController = new BaiaController();
+        propController = new ProprietarioController();
+        veterinarioController = new VeterinarioController();
+        cuidadorController = new CuidadorController();
+        idEquinoEditando = -1;
+        
+
         initComponents();
+        
+        
+        habilitarCampos(false);
+        limparCampos();
+        baiaCombobox();
+        proprietarioCombobox();
+        veterinarioCombobox();
+        cuidadorCombobox();
+
+        equinoController.atualizarTabela(grdEquinos);
+
+    }
+
+    public void baiaCombobox() {
+        String[] baiasString = baiaController.buscarBaiasString().split("\n");
+
+        for (String baiaId : baiasString) {
+            cbxBaia.addItem(baiaId);
+        }
+    }
+
+    public void proprietarioCombobox() {
+        String[] proprietarioIdNomeString = propController.buscarProprietariosString().split("\n");
+
+        for (String idNome : proprietarioIdNomeString) {
+            cbxProprietario.addItem(idNome);
+        }
+    }
+
+    public void veterinarioCombobox() {
+        String[] veterinarioIdNomeString = veterinarioController.buscarVeterinariosString().split("\n");
+
+        for (String idNome : veterinarioIdNomeString) {
+            cbxVeterinario.addItem(idNome);
+        }
+    }
+
+    public void cuidadorCombobox() {
+        String[] veterinarioIdNomeString = cuidadorController.buscarCuidadoresString().split("\n");
+
+        for (String idNome : veterinarioIdNomeString) {
+            cbxCuidador.addItem(idNome);
+        }
+    }
+
+    public Integer getIdDoidNome(String idNome) {
+        String[] novoIdNome = idNome.split(" - ");
+        return Integer.parseInt(novoIdNome[0]);
+    }
+
+    public void habilitarCampos(boolean flag) {
+        edtNome.setEnabled(flag);
+        edtSexo.setEnabled(flag);
+        edtRaca.setEnabled(flag);
+        edtDataNasc.setEnabled(flag);
+        cbxBaia.setEnabled(flag);
+        cbxCuidador.setEnabled(flag);
+        cbxVeterinario.setEnabled(flag);
+        cbxProprietario.setEnabled(flag);
+    }
+
+    public void limparCampos() {
+        edtNome.setText("");
+        edtSexo.setText("");
+        edtRaca.setText("");
+        edtDataNasc.setText("");
+    }
+
+    public void preencherFormulario(Equino e) {
+        edtNome.setText(e.getNome());
+        edtSexo.setText(String.valueOf(e.getSexo()));
+        edtRaca.setText(e.getRaca());
+        edtDataNasc.setText(String.valueOf(e.getNascimento()));
+        cbxBaia.getModel().setSelectedItem(String.valueOf(e.getBaia().getId()));
+        cbxProprietario.getModel().setSelectedItem(e.getProprietario().getId() + " - " + e.getProprietario().getNome());
+        cbxCuidador.getModel().setSelectedItem(e.getCuidador().getId() + " - " + e.getCuidador().getNome());
+        cbxVeterinario.getModel().setSelectedItem(e.getVeterinario().getId() + " - " + e.getVeterinario().getNome());
+
     }
 
     /**
@@ -27,9 +136,8 @@ public class IFrEquino extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         edtSexo = new javax.swing.JTextField();
-        edtDataNasc = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        grdEquinos = new javax.swing.JTable();
         lblNome = new javax.swing.JLabel();
         lblRaca = new javax.swing.JLabel();
         lblSexo = new javax.swing.JLabel();
@@ -50,23 +158,29 @@ public class IFrEquino extends javax.swing.JInternalFrame {
         lblVeterinario = new javax.swing.JLabel();
         cbxBaia = new javax.swing.JComboBox<>();
         lblBaia = new javax.swing.JLabel();
+        edtDataNasc = new javax.swing.JFormattedTextField();
 
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        grdEquinos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        grdEquinos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                grdEquinosMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(grdEquinos);
 
         lblNome.setText("Nome:");
 
@@ -77,14 +191,39 @@ public class IFrEquino extends javax.swing.JInternalFrame {
         lblDataNasc.setText("Data de nascimento:");
 
         btnNovo.setText("Novo");
+        btnNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovoActionPerformed(evt);
+            }
+        });
 
         btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnSalvar.setText("Salvar");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
 
         lblTitulo.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -116,6 +255,12 @@ public class IFrEquino extends javax.swing.JInternalFrame {
 
         lblBaia.setText("Baia:");
 
+        try {
+            edtDataNasc.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####-##-##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -125,43 +270,45 @@ public class IFrEquino extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane1))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 661, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(49, 49, 49)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblRaca)
-                            .addComponent(lblNome)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(cbxVeterinario, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(edtRaca, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(edtNome, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
-                                        .addComponent(lblProprietario, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(cbxProprietario, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addComponent(lblVeterinario))
-                                .addGap(69, 69, 69)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(lblCuidador)
-                                    .addComponent(edtSexo, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
-                                    .addComponent(lblSexo)
-                                    .addComponent(lblDataNasc)
-                                    .addComponent(edtDataNasc)
-                                    .addComponent(cbxCuidador, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(lblBaia)
-                                    .addComponent(cbxBaia, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                        .addGap(0, 48, Short.MAX_VALUE)))
+                        .addGap(72, 72, 72)
+                        .addComponent(btnNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(113, 113, 113)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblRaca)
+                    .addComponent(lblNome)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(cbxVeterinario, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(edtRaca, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(edtNome, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lblProprietario, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(cbxProprietario, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblVeterinario))
+                        .addGap(69, 69, 69)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblCuidador)
+                            .addComponent(edtSexo)
+                            .addComponent(lblSexo)
+                            .addComponent(lblDataNasc)
+                            .addComponent(cbxCuidador, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblBaia)
+                            .addComponent(cbxBaia, 0, 208, Short.MAX_VALUE)
+                            .addComponent(edtDataNasc))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -187,11 +334,11 @@ public class IFrEquino extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblRaca)
                     .addComponent(lblDataNasc))
-                .addGap(5, 5, 5)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(edtRaca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(edtDataNasc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(4, 4, 4)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(edtRaca)
+                    .addComponent(edtDataNasc))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblProprietario)
@@ -232,6 +379,91 @@ public class IFrEquino extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cbxBaiaActionPerformed
 
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+        idEquinoEditando = -1;
+        this.habilitarCampos(true);
+        this.limparCampos();
+    }//GEN-LAST:event_btnNovoActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        this.limparCampos();
+        this.habilitarCampos(false);
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        Equino equinoEditando = (Equino) this.getObjectSelectOnGrid();
+
+        if (equinoEditando == null)
+            JOptionPane.showMessageDialog(this, "Primeiro selecione um registro na tabela.");
+        else {
+            try {
+                equinoController.excluirEquino(equinoEditando);
+
+                equinoController.atualizarTabela(grdEquinos);
+                JOptionPane.showMessageDialog(this, "Exclusão feita com sucesso!");
+            } catch (EquinoException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        Equino equinoEditando = (Equino) this.getObjectSelectOnGrid();
+
+        if (equinoEditando == null)
+            JOptionPane.showMessageDialog(this, "Primeiro selecione um registro na tabela.");
+        else {
+            this.limparCampos();
+            this.habilitarCampos(true);
+            this.preencherFormulario(equinoEditando);
+            this.idEquinoEditando = equinoEditando.getId();
+        }
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+
+        String prop = String.valueOf(cbxProprietario.getSelectedItem());
+        String cuidador = String.valueOf(cbxCuidador.getSelectedItem());
+        String baia = String.valueOf(cbxBaia.getSelectedItem());
+        String veterinario = String.valueOf(cbxVeterinario.getSelectedItem());
+
+        try {
+            if (idEquinoEditando > 0) {
+                equinoController.atualizarEquino(
+                        idEquinoEditando, edtNome.getText(), edtSexo.getText(), edtRaca.getText(),
+                        edtDataNasc.getText(), prop, veterinario, baia, cuidador
+                );
+                idEquinoEditando = -1;
+            } else {
+                equinoController.cadastrarEquino(
+                        edtNome.getText(), edtSexo.getText(), edtRaca.getText(),
+                        edtDataNasc.getText(), prop, veterinario, baia, cuidador
+                );
+            }
+
+            equinoController.atualizarTabela(grdEquinos);
+            this.habilitarCampos(false);
+            this.limparCampos();
+        } catch (EquinoException e) {
+            System.err.println(e.getMessage());
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void grdEquinosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_grdEquinosMouseClicked
+        if (evt.getClickCount() == 2) {
+            btnEditarActionPerformed(null);
+        }
+    }//GEN-LAST:event_grdEquinosMouseClicked
+
+    private Object getObjectSelectOnGrid() {
+        int rowCliked = grdEquinos.getSelectedRow();
+        Object obj = null;
+        if (rowCliked >= 0) {
+            obj = grdEquinos.getModel().getValueAt(rowCliked, -1);
+        }
+        return obj;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
@@ -243,12 +475,12 @@ public class IFrEquino extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox<String> cbxCuidador;
     private javax.swing.JComboBox<String> cbxProprietario;
     private javax.swing.JComboBox<String> cbxVeterinario;
-    private javax.swing.JTextField edtDataNasc;
+    private javax.swing.JFormattedTextField edtDataNasc;
     private javax.swing.JTextField edtNome;
     private javax.swing.JTextField edtRaca;
     private javax.swing.JTextField edtSexo;
+    private javax.swing.JTable grdEquinos;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblBaia;
     private javax.swing.JLabel lblCuidador;
     private javax.swing.JLabel lblDataNasc;

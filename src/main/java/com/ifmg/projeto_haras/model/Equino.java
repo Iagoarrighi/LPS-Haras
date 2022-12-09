@@ -59,15 +59,23 @@ public class Equino {
         this.sexo = '-';
         this.raca = "";
         this.nascimento = null;
-        
+        this.proprietario = new Proprietario();
+        this.veterinario = new Veterinario();
+        this.baia = new Baia();
+        this.cuidador = new Cuidador();      
     }
 
-    public Equino(String nome, char sexo, String raca, LocalDate nascimento) {
+    public Equino(String nome, char sexo, String raca, LocalDate nascimento, 
+            Proprietario prop, Veterinario vet, Baia baia, Cuidador cuidador) {
         this.id = null;
         this.nome = nome;
         this.sexo = sexo;
         this.raca = raca;
         this.nascimento = nascimento;
+        this.proprietario = prop;
+        this.veterinario = vet;
+        this.baia = baia;
+        this.cuidador = cuidador;
     }
     
 }

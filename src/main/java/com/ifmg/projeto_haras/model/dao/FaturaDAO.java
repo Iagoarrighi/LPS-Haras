@@ -63,7 +63,6 @@ public class FaturaDAO implements IDao {
         }
     }
     
-    @Override
     public List<Object> findAll() {
         sql = " SELECT f "
                 + " FROM fatura f ";

@@ -5,7 +5,7 @@
 package com.ifmg.projeto_haras.model.dao;
 
 import com.ifmg.projeto_haras.factory.Database;
-import com.ifmg.projeto_haras.model.Cuidador;
+import com.ifmg.projeto_haras.model.Equino;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import java.util.List;
@@ -14,24 +14,24 @@ import java.util.List;
  *
  * @author gusta
  */
-public class CuidadorDAO implements IDao {
+public class EquinoDAO implements IDao {
     private EntityManager entityManager;
     private Query qry;
     private String sql;
     
-    public CuidadorDAO(){
+    public EquinoDAO(){
         entityManager = Database.getInstance().getEntityManager();
     }
 
     
     @Override
     public void save(Object obj) {
-        Cuidador cuidador = (Cuidador) obj;
+        Equino equino = (Equino) obj;
         this.entityManager.getTransaction().begin();
-        if (cuidador != null) {
-            this.entityManager.merge(cuidador);
+        if (equino != null) {
+            this.entityManager.merge(equino);
         } else {
-            this.entityManager.persist(cuidador);
+            this.entityManager.persist(equino);
         }
         this.entityManager.getTransaction().commit();
     }
@@ -39,17 +39,17 @@ public class CuidadorDAO implements IDao {
     
     @Override
     public boolean delete(Object obj) {
-        Cuidador cuidador = (Cuidador) obj;
+        Equino equino = (Equino) obj;
         this.entityManager.getTransaction().begin();
-        this.entityManager.remove(cuidador);
+        this.entityManager.remove(equino);
         this.entityManager.getTransaction().commit();
         return true;
     }
 
     @Override
     public Object find(int id) {
-        sql = " SELECT c "
-                + " FROM Cuidador c "
+        sql = " SELECT e "
+                + " FROM Equino e "
                 + " WHERE id = :id ";
 
         qry = this.entityManager.createQuery(sql);
@@ -63,9 +63,9 @@ public class CuidadorDAO implements IDao {
         }
     }
     
-    public List<Cuidador> findAll() {
-        sql = " SELECT c "
-                + " FROM Cuidador c ";
+    public List<Equino> findAll() {
+        sql = " SELECT e "
+                + " FROM Equino e ";
 
         qry = this.entityManager.createQuery(sql);
         

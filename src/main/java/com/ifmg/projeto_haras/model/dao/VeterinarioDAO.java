@@ -64,8 +64,7 @@ public class VeterinarioDAO implements IDao {
         }
     }
     
-    @Override
-    public List<Object> findAll() {
+    public List<Veterinario> findAll() {
         sql = " SELECT v "
                 + " FROM Veterinario v ";
 

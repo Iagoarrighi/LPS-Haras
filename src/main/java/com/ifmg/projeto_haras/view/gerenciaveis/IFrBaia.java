@@ -4,17 +4,47 @@
  */
 package com.ifmg.projeto_haras.view.gerenciaveis;
 
+import com.ifmg.projeto_haras.controller.BaiaController;
+import com.ifmg.projeto_haras.model.Baia;
+import com.ifmg.projeto_haras.model.exceptions.BaiaException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author gusta
  */
 public class IFrBaia extends javax.swing.JInternalFrame {
 
+    BaiaController baiaController;
+    int idBaiaEditando;
     /**
      * Creates new form IFrGerenciavel
      */
     public IFrBaia() {
+        baiaController = new BaiaController();
+        idBaiaEditando = -1;
+          
         initComponents();
+        
+        this.habilitarCampos(false);
+        this.limparCampos();
+        
+        baiaController.atualizarTabela(grdBaias);
+    }
+    
+    public void habilitarCampos(boolean flag) {
+        edtTamanho.setEnabled(flag);
+        edtTipo.setEnabled(flag);
+    }
+    
+    public void limparCampos() {
+        edtTamanho.setText("");
+        edtTipo.setText("");
+    }
+    
+    public void preencherFormulario(Baia b){
+        edtTamanho.setText(String.valueOf(b.getTamanho()));
+        edtTipo.setText(b.getTipo());
     }
 
     /**
@@ -51,12 +81,32 @@ public class IFrBaia extends javax.swing.JInternalFrame {
         });
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         btnSalvar.setText("Salvar");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
 
         lblTitulo.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
         lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -74,15 +124,20 @@ public class IFrBaia extends javax.swing.JInternalFrame {
 
         grdBaias.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
+        grdBaias.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                grdBaiasMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(grdBaias);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -143,13 +198,84 @@ public class IFrBaia extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
-        // TODO add your handling code here:
+        this.habilitarCampos(true);
+        this.limparCampos();
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void edtTamanhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edtTamanhoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_edtTamanhoActionPerformed
 
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        Baia baiaEditando = (Baia) this.getObjectSelectOnGrid();
+
+        if (baiaEditando == null)
+            JOptionPane.showMessageDialog(this, "Primeiro selecione um registro na tabela.");
+        else {
+            this.limparCampos();
+            this.habilitarCampos(true);
+            this.preencherFormulario(baiaEditando);
+            this.idBaiaEditando = baiaEditando.getId();
+        }
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        idBaiaEditando = -1;
+        this.limparCampos();
+        this.habilitarCampos(false);
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        Baia baiaEditando = (Baia) this.getObjectSelectOnGrid();
+
+        if (baiaEditando == null)
+            JOptionPane.showMessageDialog(this, "Primeiro selecione um registro na tabela.");
+        else {
+            try {
+                baiaController.excluirBaia(baiaEditando);
+
+                baiaController.atualizarTabela(grdBaias);
+                JOptionPane.showMessageDialog(this, "Exclusão feita com sucesso!");
+            } catch (BaiaException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        try {
+            if (idBaiaEditando > 0) {
+                baiaController.atualizarBaia(idBaiaEditando, Double.parseDouble(edtTamanho.getText()), edtTipo.getText());
+                idBaiaEditando = -1;
+            } else {
+                baiaController.cadastrarBaia(Double.parseDouble(edtTamanho.getText()), edtTipo.getText());
+            }
+
+            baiaController.atualizarTabela(grdBaias);
+            this.habilitarCampos(false);
+            this.limparCampos();
+        } catch (BaiaException e) {
+            System.err.println(e.getMessage());
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void grdBaiasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_grdBaiasMouseClicked
+        if (evt.getClickCount() == 2) {
+            btnEditarActionPerformed(null);
+        }
+    }//GEN-LAST:event_grdBaiasMouseClicked
+
+    private Object getObjectSelectOnGrid() {
+        int rowCliked = grdBaias.getSelectedRow();
+        Object obj = null;
+        if (rowCliked >= 0) {
+            obj = grdBaias.getModel().getValueAt(rowCliked, -1);
+        }
+        return obj;
+    }
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;

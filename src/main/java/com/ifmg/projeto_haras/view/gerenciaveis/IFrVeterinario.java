@@ -4,17 +4,52 @@
  */
 package com.ifmg.projeto_haras.view.gerenciaveis;
 
+import com.ifmg.projeto_haras.controller.VeterinarioController;
+import com.ifmg.projeto_haras.model.Veterinario;
+import com.ifmg.projeto_haras.model.exceptions.VeterinarioException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author gusta
  */
 public class IFrVeterinario extends javax.swing.JInternalFrame {
 
+    VeterinarioController veterinarioController;
+    int idVeterinarioEditando;
     /**
      * Creates new form IFrCuidador
      */
     public IFrVeterinario() {
+        veterinarioController = new VeterinarioController();
+        idVeterinarioEditando = -1;
+        
         initComponents();
+        
+        habilitarCampos(false);
+        limparCampos();
+        
+        veterinarioController.atualizarTabela(grdVeterinarios);
+    }
+    
+    public void habilitarCampos(boolean flag) {
+        edtNome.setEnabled(flag);
+        edtSenha.setEnabled(flag);
+        edtEmail.setEnabled(flag);
+        edtCrmv.setEnabled(flag);
+    }
+    
+    public void limparCampos(){
+        edtNome.setText("");
+        edtEmail.setText("");
+        edtSenha.setText("");
+        edtCrmv.setText("");
+    }
+    public void preencherFormulario(Veterinario v){
+        edtNome.setText(v.getNome());
+        edtEmail.setText(v.getEmail());
+        edtSenha.setText(v.getSenha());
+        edtCrmv.setText(v.getCrmv());
     }
 
     /**
@@ -37,7 +72,7 @@ public class IFrVeterinario extends javax.swing.JInternalFrame {
         edtEmail = new javax.swing.JTextField();
         edtCrmv = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        grdCuidadores = new javax.swing.JTable();
+        grdVeterinarios = new javax.swing.JTable();
         lblNome = new javax.swing.JLabel();
         lblSenha = new javax.swing.JLabel();
         lblEmail = new javax.swing.JLabel();
@@ -48,31 +83,61 @@ public class IFrVeterinario extends javax.swing.JInternalFrame {
         setMaximizable(true);
 
         btnNovo.setText("Novo");
+        btnNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovoActionPerformed(evt);
+            }
+        });
 
         btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnSalvar.setText("Salvar");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
 
         lblTitulo.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTitulo.setText("Gerenciamento dos Veterinários");
 
-        grdCuidadores.setModel(new javax.swing.table.DefaultTableModel(
+        grdVeterinarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
-        jScrollPane1.setViewportView(grdCuidadores);
+        grdVeterinarios.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                grdVeterinariosMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(grdVeterinarios);
 
         lblNome.setText("Nome:");
 
@@ -153,6 +218,81 @@ public class IFrVeterinario extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+        this.habilitarCampos(true);
+        this.limparCampos();
+    }//GEN-LAST:event_btnNovoActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        Veterinario veterinarioEditando = (Veterinario) this.getObjectSelectOnGrid();
+
+        if (veterinarioEditando == null)
+            JOptionPane.showMessageDialog(this, "Primeiro selecione um registro na tabela.");
+        else {
+            this.limparCampos();
+            this.habilitarCampos(true);
+            this.preencherFormulario(veterinarioEditando);
+            this.idVeterinarioEditando = veterinarioEditando.getId();
+        }
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        idVeterinarioEditando = -1;
+        this.limparCampos();
+        this.habilitarCampos(false);
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+       Veterinario veterinarioEditando = (Veterinario) this.getObjectSelectOnGrid();
+
+        if (veterinarioEditando == null)
+            JOptionPane.showMessageDialog(this, "Primeiro selecione um registro na tabela.");
+        else {
+            try {
+                veterinarioController.excluirVeterinario(veterinarioEditando);
+
+                veterinarioController.atualizarTabela(grdVeterinarios);
+                JOptionPane.showMessageDialog(this, "Exclusão feita com sucesso!");
+            } catch (VeterinarioException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        try {
+            if (idVeterinarioEditando > 0) {
+                veterinarioController.atualizarVeterinario(idVeterinarioEditando, edtNome.getText(), edtSenha.getText(), edtEmail.getText(), edtCrmv.getText());
+                idVeterinarioEditando = -1;
+            } else {
+                veterinarioController.cadastrarVeterinario(edtNome.getText(), edtSenha.getText(), edtEmail.getText(), edtCrmv.getText());
+            }
+
+            veterinarioController.atualizarTabela(grdVeterinarios);
+            this.habilitarCampos(false);
+            this.limparCampos();
+        } catch (VeterinarioException e) {
+            System.err.println(e.getMessage());
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void grdVeterinariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_grdVeterinariosMouseClicked
+        if (evt.getClickCount() == 2) {
+            btnEditarActionPerformed(null);
+        }
+    }//GEN-LAST:event_grdVeterinariosMouseClicked
+
+    
+    
+    private Object getObjectSelectOnGrid() {
+        int rowCliked = grdVeterinarios.getSelectedRow();
+        Object obj = null;
+        if (rowCliked >= 0) {
+            obj = grdVeterinarios.getModel().getValueAt(rowCliked, -1);
+        }
+        return obj;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
@@ -164,7 +304,7 @@ public class IFrVeterinario extends javax.swing.JInternalFrame {
     private javax.swing.JTextField edtEmail;
     private javax.swing.JTextField edtNome;
     private javax.swing.JTextField edtSenha;
-    private javax.swing.JTable grdCuidadores;
+    private javax.swing.JTable grdVeterinarios;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblCrmv;
     private javax.swing.JLabel lblEmail;

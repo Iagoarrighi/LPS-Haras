@@ -4,17 +4,50 @@
  */
 package com.ifmg.projeto_haras.view.gerenciaveis;
 
+import com.ifmg.projeto_haras.controller.CuidadorController;
+import com.ifmg.projeto_haras.model.Cuidador;
+import com.ifmg.projeto_haras.model.exceptions.CuidadorException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author gusta
  */
 public class IFrCuidador extends javax.swing.JInternalFrame {
 
+    CuidadorController cuidadorController;
+    int idCuidadorEditando;
     /**
      * Creates new form IFrCuidador
      */
     public IFrCuidador() {
+        cuidadorController = new CuidadorController();
+        idCuidadorEditando = -1;
         initComponents();
+        habilitarCampos(false);
+        limparCampos();
+        
+        cuidadorController.atualizarTabela(grdCuidadores);
+    }
+    
+    public void habilitarCampos(boolean flag) {
+        edtNome.setEnabled(flag);
+        edtSenha.setEnabled(flag);
+        edtEmail.setEnabled(flag);
+        edtDataInicioContrato.setEnabled(flag);
+    }
+    
+    public void limparCampos(){
+        edtNome.setText("");
+        edtEmail.setText("");
+        edtSenha.setText("");
+        edtDataInicioContrato.setText("");
+    }
+    public void preencherFormulario(Cuidador v){
+        edtNome.setText(v.getNome());
+        edtEmail.setText(v.getEmail());
+        edtSenha.setText(v.getSenha());
+        edtDataInicioContrato.setText(String.valueOf(v.getDataInicioContrato()));
     }
 
     /**
@@ -35,44 +68,74 @@ public class IFrCuidador extends javax.swing.JInternalFrame {
         edtNome = new javax.swing.JTextField();
         edtSenha = new javax.swing.JTextField();
         edtEmail = new javax.swing.JTextField();
-        edtDataInicioContrato = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        grdCuidadores = new javax.swing.JTable();
         lblNome = new javax.swing.JLabel();
         lblSenha = new javax.swing.JLabel();
         lblEmail = new javax.swing.JLabel();
         lblDataInicioContrato = new javax.swing.JLabel();
+        edtDataInicioContrato = new javax.swing.JFormattedTextField();
 
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
 
         btnNovo.setText("Novo");
+        btnNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovoActionPerformed(evt);
+            }
+        });
 
         btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnSalvar.setText("Salvar");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
 
         lblTitulo.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTitulo.setText("Gerenciamento dos Cuidadores");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        grdCuidadores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        grdCuidadores.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                grdCuidadoresMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(grdCuidadores);
 
         lblNome.setText("Nome:");
 
@@ -81,6 +144,12 @@ public class IFrCuidador extends javax.swing.JInternalFrame {
         lblEmail.setText("E-mail:");
 
         lblDataInicioContrato.setText("Data do inicio do contrato:");
+
+        try {
+            edtDataInicioContrato.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####-##-##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -96,25 +165,25 @@ public class IFrCuidador extends javax.swing.JInternalFrame {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                         .addGroup(layout.createSequentialGroup()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(edtSenha)
+                                .addComponent(edtSenha, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
                                 .addComponent(edtNome)
                                 .addGroup(layout.createSequentialGroup()
                                     .addComponent(btnNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(18, 18, 18)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                     .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGap(18, 18, 18)
+                            .addGap(9, 9, 9)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(edtDataInicioContrato, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(edtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(lblEmail)
-                                    .addComponent(lblDataInicioContrato))))))
+                                    .addComponent(lblDataInicioContrato)
+                                    .addComponent(edtDataInicioContrato, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -144,7 +213,7 @@ public class IFrCuidador extends javax.swing.JInternalFrame {
                 .addGap(5, 5, 5)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(edtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(edtDataInicioContrato, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(edtDataInicioContrato, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(33, 33, 33)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -153,6 +222,79 @@ public class IFrCuidador extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+        idCuidadorEditando = -1;
+        this.habilitarCampos(true);
+        this.limparCampos();
+    }//GEN-LAST:event_btnNovoActionPerformed
+
+    private void grdCuidadoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_grdCuidadoresMouseClicked
+        if (evt.getClickCount() == 2) {
+            btnEditarActionPerformed(null);
+        }
+    }//GEN-LAST:event_grdCuidadoresMouseClicked
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        Cuidador cuidadorEditando = (Cuidador) this.getObjectSelectOnGrid();
+
+        if (cuidadorEditando == null)
+            JOptionPane.showMessageDialog(this, "Primeiro selecione um registro na tabela.");
+        else {
+            this.limparCampos();
+            this.habilitarCampos(true);
+            this.preencherFormulario(cuidadorEditando);
+            this.idCuidadorEditando = cuidadorEditando.getId();
+        }
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        this.limparCampos();
+        this.habilitarCampos(false);
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        Cuidador cuidadorEditando = (Cuidador) this.getObjectSelectOnGrid();
+
+        if (cuidadorEditando == null)
+            JOptionPane.showMessageDialog(this, "Primeiro selecione um registro na tabela.");
+        else {
+            try {
+                cuidadorController.excluirCuidador(cuidadorEditando);
+
+                cuidadorController.atualizarTabela(grdCuidadores);
+                JOptionPane.showMessageDialog(this, "Exclusão feita com sucesso!");
+            } catch (CuidadorException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        try {
+            if (idCuidadorEditando > 0) {
+                cuidadorController.atualizarCuidador(idCuidadorEditando, edtNome.getText(), edtSenha.getText(), edtEmail.getText(), edtDataInicioContrato.getText());
+                idCuidadorEditando = -1;
+            } else {
+                cuidadorController.cadastrarCuidador(edtNome.getText(), edtSenha.getText(), edtEmail.getText(), edtDataInicioContrato.getText());
+            }
+
+            cuidadorController.atualizarTabela(grdCuidadores);
+            this.habilitarCampos(false);
+            this.limparCampos();
+        } catch (CuidadorException e) {
+            System.err.println(e.getMessage());
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private Object getObjectSelectOnGrid() {
+        int rowCliked = grdCuidadores.getSelectedRow();
+        Object obj = null;
+        if (rowCliked >= 0) {
+            obj = grdCuidadores.getModel().getValueAt(rowCliked, -1);
+        }
+        return obj;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
@@ -160,12 +302,12 @@ public class IFrCuidador extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnNovo;
     private javax.swing.JButton btnSalvar;
-    private javax.swing.JTextField edtDataInicioContrato;
+    private javax.swing.JFormattedTextField edtDataInicioContrato;
     private javax.swing.JTextField edtEmail;
     private javax.swing.JTextField edtNome;
     private javax.swing.JTextField edtSenha;
+    private javax.swing.JTable grdCuidadores;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblDataInicioContrato;
     private javax.swing.JLabel lblEmail;
     private javax.swing.JLabel lblNome;

@@ -63,7 +63,6 @@ public class AdministradorDAO implements IDao {
         }
     }
     
-    @Override
     public List<Object> findAll() {
         sql = " SELECT a "
                 + " FROM Administrador a ";

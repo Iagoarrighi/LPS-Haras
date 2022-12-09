@@ -7,7 +7,9 @@ package com.ifmg.projeto_haras.view;
 import com.ifmg.projeto_haras.view.gerenciaveis.IFrAlimento;
 import com.ifmg.projeto_haras.view.gerenciaveis.IFrBaia;
 import com.ifmg.projeto_haras.view.gerenciaveis.IFrCuidador;
+import com.ifmg.projeto_haras.view.gerenciaveis.IFrEquino;
 import com.ifmg.projeto_haras.view.gerenciaveis.IFrProprietario;
+import com.ifmg.projeto_haras.view.gerenciaveis.IFrServicoAdicional;
 import com.ifmg.projeto_haras.view.gerenciaveis.IFrVeterinario;
 import javax.swing.JFrame;
 
@@ -50,6 +52,8 @@ public class FrAdministrador extends javax.swing.JFrame {
         mitemGerenciarBaia = new javax.swing.JMenuItem();
         menuAlimentos = new javax.swing.JMenu();
         mitemGerenciarAlimento = new javax.swing.JMenuItem();
+        mitemGerenciarSerAdicionais = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -141,6 +145,18 @@ public class FrAdministrador extends javax.swing.JFrame {
 
         jMenuBar1.add(menuAlimentos);
 
+        mitemGerenciarSerAdicionais.setText("Serviços adicionais");
+
+        jMenuItem1.setText("Gerenciar");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        mitemGerenciarSerAdicionais.add(jMenuItem1);
+
+        jMenuBar1.add(mitemGerenciarSerAdicionais);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -162,7 +178,9 @@ public class FrAdministrador extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void mnItemGerenciarEquinoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnItemGerenciarEquinoActionPerformed
-        
+        IFrEquino ifrEquino = new IFrEquino();
+        deskPaneAdm.add(ifrEquino);
+        ifrEquino.setVisible(true);
     }//GEN-LAST:event_mnItemGerenciarEquinoActionPerformed
 
     private void mitemGerenciarBaiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitemGerenciarBaiaActionPerformed
@@ -199,6 +217,12 @@ public class FrAdministrador extends javax.swing.JFrame {
         ifrProprietario.setVisible(true);
     }//GEN-LAST:event_mitemGerenciarProprietarioActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        IFrServicoAdicional ifrServicoAdicional = new IFrServicoAdicional();
+        deskPaneAdm.add(ifrServicoAdicional);
+        ifrServicoAdicional.setVisible(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane deskPaneAdm;
@@ -206,6 +230,7 @@ public class FrAdministrador extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenu menuAdministrador;
     private javax.swing.JMenu menuAlimentos;
     private javax.swing.JMenu menuBaias;
@@ -213,6 +238,7 @@ public class FrAdministrador extends javax.swing.JFrame {
     private javax.swing.JMenuItem mitemGerenciarBaia;
     private javax.swing.JMenuItem mitemGerenciarCuidador;
     private javax.swing.JMenuItem mitemGerenciarProprietario;
+    private javax.swing.JMenu mitemGerenciarSerAdicionais;
     private javax.swing.JMenuItem mitemGerenciarVeterinario;
     private javax.swing.JMenuItem mnItemGerenciarEquino;
     // End of variables declaration//GEN-END:variables

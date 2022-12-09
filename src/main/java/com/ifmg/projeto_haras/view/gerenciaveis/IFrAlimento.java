@@ -4,17 +4,48 @@
  */
 package com.ifmg.projeto_haras.view.gerenciaveis;
 
+import com.ifmg.projeto_haras.controller.AlimentoController;
+import com.ifmg.projeto_haras.model.Alimento;
+import com.ifmg.projeto_haras.model.exceptions.AlimentoException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author gusta
  */
 public class IFrAlimento extends javax.swing.JInternalFrame {
 
+    AlimentoController alimentoController;
+    int idAlimentoEditando;
+
     /**
      * Creates new form IFrAlimento
      */
     public IFrAlimento() {
+        alimentoController = new AlimentoController();
+        idAlimentoEditando = -1;
+
         initComponents();
+        
+        this.habilitarCampos(false);
+        this.limparCampos();
+        
+        alimentoController.atualizarTabela(grdAlimentos);
+    }
+
+    public void habilitarCampos(boolean flag) {
+        edtNome.setEnabled(flag);
+        edtPreco.setEnabled(flag);
+    }
+
+    public void limparCampos() {
+        edtNome.setText("");
+        edtPreco.setText("");
+    }
+    
+    public void preencherFormulario(Alimento a){
+        edtNome.setText(a.getNome());
+        edtPreco.setText(String.valueOf(a.getPreco()));
     }
 
     /**
@@ -60,24 +91,49 @@ public class IFrAlimento extends javax.swing.JInternalFrame {
         });
 
         btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnSalvar.setText("Salvar");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
 
         grdAlimentos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
+        grdAlimentos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                grdAlimentosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(grdAlimentos);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -137,9 +193,79 @@ public class IFrAlimento extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
-        // TODO add your handling code here:
+        this.habilitarCampos(true);
+        this.limparCampos();
     }//GEN-LAST:event_btnNovoActionPerformed
 
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        Alimento alimentoEditando = (Alimento) this.getObjectSelectOnGrid();
+
+        if (alimentoEditando == null)
+            JOptionPane.showMessageDialog(this, "Primeiro selecione um registro na tabela.");
+        else {
+            this.limparCampos();
+            this.habilitarCampos(true);
+            this.preencherFormulario(alimentoEditando);
+            this.idAlimentoEditando = alimentoEditando.getId();
+        }
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        idAlimentoEditando = -1;
+        this.limparCampos();
+        this.habilitarCampos(false);
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        Alimento alimentoEditando = (Alimento) this.getObjectSelectOnGrid();
+
+        if (alimentoEditando == null)
+            JOptionPane.showMessageDialog(this, "Primeiro selecione um registro na tabela.");
+        else {
+            try {
+                alimentoController.excluirAlimento(alimentoEditando);
+
+                alimentoController.atualizarTabela(grdAlimentos);
+                JOptionPane.showMessageDialog(this, "Exclusão feita com sucesso!");
+            } catch (AlimentoException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        try {
+            if (idAlimentoEditando > 0) {
+                alimentoController.atualizarAlimento(idAlimentoEditando, edtNome.getText(), edtPreco.getText());
+                idAlimentoEditando = -1;
+            } else {
+                alimentoController.cadastrarAlimento(edtNome.getText(), edtPreco.getText());
+            }
+
+            alimentoController.atualizarTabela(grdAlimentos);
+            this.habilitarCampos(false);
+            this.limparCampos();
+        } catch (AlimentoException e) {
+            System.err.println(e.getMessage());
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void grdAlimentosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_grdAlimentosMouseClicked
+        if (evt.getClickCount() == 2) {
+            btnEditarActionPerformed(null);
+        }
+    }//GEN-LAST:event_grdAlimentosMouseClicked
+
+    private Object getObjectSelectOnGrid() {
+        int rowCliked = grdAlimentos.getSelectedRow();
+        Object obj = null;
+        if (rowCliked >= 0) {
+            obj = grdAlimentos.getModel().getValueAt(rowCliked, -1);
+        }
+        return obj;
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;

@@ -4,17 +4,47 @@
  */
 package com.ifmg.projeto_haras.view.gerenciaveis;
 
+import com.ifmg.projeto_haras.controller.ServicoAdicionalController;
+import com.ifmg.projeto_haras.model.ServicoAdicional;
+import com.ifmg.projeto_haras.model.exceptions.ServicoAdicionalException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author gusta
  */
 public class IFrServicoAdicional extends javax.swing.JInternalFrame {
 
+    ServicoAdicionalController servicoAdicionalController;
+    int idServicoAdicionalEditando;
     /**
      * Creates new form IFrGerenciavel
      */
     public IFrServicoAdicional() {
+        servicoAdicionalController = new ServicoAdicionalController();
+        idServicoAdicionalEditando = -1;
+        
         initComponents();
+        
+        this.habilitarCampos(false);
+        this.limparCampos();
+        
+        servicoAdicionalController.atualizarTabela(grdServicosAdicionais);
+    }
+    
+    public void habilitarCampos(boolean flag) {
+        edtServico.setEnabled(flag);
+        edtPreco.setEnabled(flag);
+    }
+    
+    public void limparCampos() {
+        edtServico.setText("");
+        edtPreco.setText("");
+    }
+    
+    public void preencherFormulario(ServicoAdicional a){
+        edtPreco.setText(String.valueOf(a.getPreco()));
+        edtServico.setText(a.getServico());
     }
 
     /**
@@ -51,12 +81,32 @@ public class IFrServicoAdicional extends javax.swing.JInternalFrame {
         });
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         btnSalvar.setText("Salvar");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
 
         lblTitulo.setFont(new java.awt.Font("Dialog", 1, 28)); // NOI18N
         lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -74,15 +124,20 @@ public class IFrServicoAdicional extends javax.swing.JInternalFrame {
 
         grdServicosAdicionais.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
+        grdServicosAdicionais.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                grdServicosAdicionaisMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(grdServicosAdicionais);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -145,13 +200,91 @@ public class IFrServicoAdicional extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
-        // TODO add your handling code here:
+        this.habilitarCampos(true);
+        this.limparCampos();
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void edtServicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edtServicoActionPerformed
-        // TODO add your handling code here:
+        ServicoAdicional servicoEditando = (ServicoAdicional) this.getObjectSelectOnGrid();
+
+        if (servicoEditando == null)
+            JOptionPane.showMessageDialog(this, "Primeiro selecione um registro na tabela.");
+        else {
+            this.limparCampos();
+            this.habilitarCampos(true);
+            this.preencherFormulario(servicoEditando);
+            this.idServicoAdicionalEditando = servicoEditando.getId();
+        }
     }//GEN-LAST:event_edtServicoActionPerformed
 
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        idServicoAdicionalEditando = -1;
+        this.limparCampos();
+        this.habilitarCampos(false);
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        ServicoAdicional servicoEditando = (ServicoAdicional) this.getObjectSelectOnGrid();
+
+        if (servicoEditando == null)
+            JOptionPane.showMessageDialog(this, "Primeiro selecione um registro na tabela.");
+        else {
+            try {
+                servicoAdicionalController.excluirServico(servicoEditando);
+
+                servicoAdicionalController.atualizarTabela(grdServicosAdicionais);
+                JOptionPane.showMessageDialog(this, "Exclusão feita com sucesso!");
+            } catch (ServicoAdicionalException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        try {
+            if (idServicoAdicionalEditando > 0) {
+                servicoAdicionalController.atualizarServico(idServicoAdicionalEditando, edtServico.getText(), edtPreco.getText());
+                idServicoAdicionalEditando = -1;
+            } else {
+                servicoAdicionalController.cadastrarServico(edtServico.getText(), edtPreco.getText());
+            }
+
+            servicoAdicionalController.atualizarTabela(grdServicosAdicionais);
+            this.habilitarCampos(false);
+            this.limparCampos();
+        } catch (ServicoAdicionalException e) {
+            System.err.println(e.getMessage());
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void grdServicosAdicionaisMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_grdServicosAdicionaisMouseClicked
+        if (evt.getClickCount() == 2) {
+            btnEditarActionPerformed(null);
+        }
+    }//GEN-LAST:event_grdServicosAdicionaisMouseClicked
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        ServicoAdicional servicoEditando = (ServicoAdicional) this.getObjectSelectOnGrid();
+
+        if (servicoEditando == null)
+            JOptionPane.showMessageDialog(this, "Primeiro selecione um registro na tabela.");
+        else {
+            this.limparCampos();
+            this.habilitarCampos(true);
+            this.preencherFormulario(servicoEditando);
+            this.idServicoAdicionalEditando = servicoEditando.getId();
+        }
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private Object getObjectSelectOnGrid() {
+        int rowCliked = grdServicosAdicionais.getSelectedRow();
+        Object obj = null;
+        if (rowCliked >= 0) {
+            obj = grdServicosAdicionais.getModel().getValueAt(rowCliked, -1);
+        }
+        return obj;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;

@@ -63,8 +63,7 @@ public class ServicoAdicionalDAO implements IDao {
         }
     }
     
-    @Override
-    public List<Object> findAll() {
+    public List<ServicoAdicional> findAll() {
         sql = " SELECT s "
                 + " FROM ServicoAdicional s ";
 
