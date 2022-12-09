@@ -27,7 +27,7 @@ public class EquinoController {
     }
 
     private Integer getIdDoidNome(String idNome) {
-        if(idNome.equals("")){
+        if (idNome.equals("")) {
             return null;
         }
         String[] novoIdNome = idNome.split(" - ");
@@ -37,12 +37,15 @@ public class EquinoController {
     public void cadastrarEquino(String nome, String sexo,
             String raca, String nascimento, String prop, String vet,
             String baia, String cuidador) {
-        
+
         System.out.println("ENTROU NO CADASTRAR");
 
         Integer idProprietario = getIdDoidNome(String.valueOf(prop));
         Integer idCuidador = getIdDoidNome(String.valueOf(cuidador));
-        Integer idBaia = Integer.parseInt(String.valueOf(baia));
+        Integer idBaia=null;
+        if (!String.valueOf(baia).equals("")) {
+             idBaia = Integer.parseInt(String.valueOf(baia));
+        }
         Integer idVeterinario = getIdDoidNome(String.valueOf(vet));
 
         ProprietarioController propC = new ProprietarioController();
@@ -65,7 +68,7 @@ public class EquinoController {
     public void atualizarEquino(int idEquino, String nome, String sexo,
             String raca, String nascimento, String prop, String vet,
             String baia, String cuidador) {
-        
+
         System.out.println("ENTROU NO ATUALIZAR");
 
         Integer idProprietario = getIdDoidNome(String.valueOf(prop));

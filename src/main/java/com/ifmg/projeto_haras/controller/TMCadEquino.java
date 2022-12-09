@@ -77,6 +77,9 @@ public class TMCadEquino  extends AbstractTableModel  {
                     }
                     return aux.getVeterinario().getId()+ " - "+aux.getVeterinario().getNome();
                 case COL_BAIA:
+                    if(aux.getBaia() == null){
+                        return "";
+                    }
                     return aux.getBaia().getId();
                  
                
