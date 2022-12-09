@@ -42,9 +42,9 @@ public class EquinoController {
 
         Integer idProprietario = getIdDoidNome(String.valueOf(prop));
         Integer idCuidador = getIdDoidNome(String.valueOf(cuidador));
-        Integer idBaia=null;
+        Integer idBaia = null;
         if (!String.valueOf(baia).equals("")) {
-             idBaia = Integer.parseInt(String.valueOf(baia));
+            idBaia = Integer.parseInt(String.valueOf(baia));
         }
         Integer idVeterinario = getIdDoidNome(String.valueOf(vet));
 
@@ -73,7 +73,10 @@ public class EquinoController {
 
         Integer idProprietario = getIdDoidNome(String.valueOf(prop));
         Integer idCuidador = getIdDoidNome(String.valueOf(cuidador));
-        Integer idBaia = Integer.parseInt(String.valueOf(baia));
+        Integer idBaia = null;
+        if (!String.valueOf(baia).equals("")) {
+            idBaia = Integer.parseInt(String.valueOf(baia));
+        }
         Integer idVeterinario = getIdDoidNome(String.valueOf(vet));
 
         ProprietarioController propC = new ProprietarioController();

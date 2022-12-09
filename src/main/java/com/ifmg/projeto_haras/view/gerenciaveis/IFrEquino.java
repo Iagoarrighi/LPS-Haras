@@ -120,7 +120,10 @@ public class IFrEquino extends javax.swing.JInternalFrame {
         edtRaca.setText(e.getRaca());
         edtDataNasc.setText(String.valueOf(e.getNascimento()));
         
-        cbxBaia.getModel().setSelectedItem(String.valueOf(e.getBaia().getId()));
+         if(e.getBaia()!= null){
+            cbxBaia.getModel().setSelectedItem(String.valueOf(e.getBaia().getId()));
+        }
+        
         
         if(e.getProprietario() != null){
             cbxProprietario.getModel().setSelectedItem(e.getProprietario().getId() + " - " + e.getProprietario().getNome());
