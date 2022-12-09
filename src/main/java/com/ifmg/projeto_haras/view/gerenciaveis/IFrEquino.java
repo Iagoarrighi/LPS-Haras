@@ -60,6 +60,7 @@ public class IFrEquino extends javax.swing.JInternalFrame {
     }
 
     public void baiaCombobox() {
+        cbxBaia.addItem("");
         String[] baiasString = baiaController.buscarBaiasString().split("\n");
 
         for (String baiaId : baiasString) {
@@ -68,6 +69,7 @@ public class IFrEquino extends javax.swing.JInternalFrame {
     }
 
     public void proprietarioCombobox() {
+        cbxProprietario.addItem("");
         String[] proprietarioIdNomeString = propController.buscarProprietariosString().split("\n");
 
         for (String idNome : proprietarioIdNomeString) {
@@ -76,6 +78,7 @@ public class IFrEquino extends javax.swing.JInternalFrame {
     }
 
     public void veterinarioCombobox() {
+        cbxVeterinario.addItem("");
         String[] veterinarioIdNomeString = veterinarioController.buscarVeterinariosString().split("\n");
 
         for (String idNome : veterinarioIdNomeString) {
@@ -84,6 +87,7 @@ public class IFrEquino extends javax.swing.JInternalFrame {
     }
 
     public void cuidadorCombobox() {
+        cbxCuidador.addItem("");
         String[] veterinarioIdNomeString = cuidadorController.buscarCuidadoresString().split("\n");
 
         for (String idNome : veterinarioIdNomeString) {
