@@ -39,13 +39,13 @@ public class Equino {
     @OneToMany(mappedBy = "pk.equino", cascade = CascadeType.ALL)
     private List<EquinoServico> equinosServico = new ArrayList<>();
     
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Proprietario proprietario;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Cuidador cuidador;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Veterinario veterinario;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.PERSIST)
     private Baia baia;
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "Equino_Alimento"

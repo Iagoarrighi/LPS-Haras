@@ -62,10 +62,19 @@ public class TMCadEquino  extends AbstractTableModel  {
                 case COL_NASCIMENTO:
                     return aux.getNascimento();
                 case COL_PROP:
+                    if(aux.getProprietario() == null){
+                        return "";
+                    }
                     return aux.getProprietario().getId()+ " - "+aux.getProprietario().getNome();
                 case COL_CUIDADOR:
+                    if(aux.getCuidador() == null){
+                        return "";
+                    }
                     return aux.getCuidador().getId()+ " - "+aux.getCuidador().getNome();
                 case COL_VETERINARIO:
+                    if(aux.getVeterinario() == null){
+                        return "";
+                    }
                     return aux.getVeterinario().getId()+ " - "+aux.getVeterinario().getNome();
                 case COL_BAIA:
                     return aux.getBaia().getId();

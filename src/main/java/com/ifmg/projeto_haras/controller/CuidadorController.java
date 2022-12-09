@@ -33,7 +33,10 @@ public class CuidadorController {
         return cuidadorIdNomeString;
     }
     
-    public Cuidador buscarCuidadorPorId(int id){
+    public Cuidador buscarCuidadorPorId(Integer id){
+        if(id == null){
+            return null;
+        }
         Cuidador cuidador = (Cuidador) repositorio.find(id);
         return cuidador;
     }
@@ -58,6 +61,7 @@ public class CuidadorController {
     }
     
     public void excluirCuidador(Cuidador cuidador){
+        System.out.println(cuidador.getId());
         if (cuidador != null) {
             repositorio.delete(cuidador);
         }else{

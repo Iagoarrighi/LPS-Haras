@@ -119,11 +119,19 @@ public class IFrEquino extends javax.swing.JInternalFrame {
         edtSexo.setText(String.valueOf(e.getSexo()));
         edtRaca.setText(e.getRaca());
         edtDataNasc.setText(String.valueOf(e.getNascimento()));
+        
         cbxBaia.getModel().setSelectedItem(String.valueOf(e.getBaia().getId()));
-        cbxProprietario.getModel().setSelectedItem(e.getProprietario().getId() + " - " + e.getProprietario().getNome());
-        cbxCuidador.getModel().setSelectedItem(e.getCuidador().getId() + " - " + e.getCuidador().getNome());
-        cbxVeterinario.getModel().setSelectedItem(e.getVeterinario().getId() + " - " + e.getVeterinario().getNome());
-
+        
+        if(e.getProprietario() != null){
+            cbxProprietario.getModel().setSelectedItem(e.getProprietario().getId() + " - " + e.getProprietario().getNome());
+        }
+        if(e.getCuidador() != null){
+            cbxCuidador.getModel().setSelectedItem(e.getCuidador().getId() + " - " + e.getCuidador().getNome());
+        }
+        
+        if(e.getVeterinario()!= null){
+            cbxVeterinario.getModel().setSelectedItem(e.getVeterinario().getId() + " - " + e.getVeterinario().getNome());
+        }
     }
 
     /**
@@ -409,7 +417,7 @@ public class IFrEquino extends javax.swing.JInternalFrame {
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         Equino equinoEditando = (Equino) this.getObjectSelectOnGrid();
-
+        System.out.println("ID EQUINO EDITANDO: "+equinoEditando.getId());
         if (equinoEditando == null)
             JOptionPane.showMessageDialog(this, "Primeiro selecione um registro na tabela.");
         else {
@@ -422,6 +430,9 @@ public class IFrEquino extends javax.swing.JInternalFrame {
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
 
+        if(cbxCuidador.getSelectedItem().equals("")){
+            System.out.println("RETORNA NADA");
+        }
         String prop = String.valueOf(cbxProprietario.getSelectedItem());
         String cuidador = String.valueOf(cbxCuidador.getSelectedItem());
         String baia = String.valueOf(cbxBaia.getSelectedItem());

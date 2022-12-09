@@ -33,7 +33,10 @@ public class ProprietarioController {
         return proprietarioIdNomeString;
     }
     
-    public Proprietario buscarProprietarioPorId(int id){
+    public Proprietario buscarProprietarioPorId(Integer id){
+        if(id == null){
+            return null;
+        }
         Proprietario prop = (Proprietario) repositorio.find(id);
         return prop;
     }

@@ -33,7 +33,10 @@ public class VeterinarioController {
         return veterinarioIdNomeString;
     }
     
-    public Veterinario buscarVeterinarioPorId(int id){
+    public Veterinario buscarVeterinarioPorId(Integer id){
+        if(id == null){
+            return null;
+        }
         Veterinario vet = (Veterinario) repositorio.find(id);
         return vet;
     }
