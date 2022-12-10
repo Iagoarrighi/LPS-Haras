@@ -72,6 +72,7 @@ public class FrVeterinarioEqAlimentos extends javax.swing.JFrame {
         lblEquinoCbx = new javax.swing.JLabel();
         lblAlimentoCbx = new javax.swing.JLabel();
         btnRelacionar = new javax.swing.JButton();
+        btnDeletarRelacionamento = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -108,6 +109,13 @@ public class FrVeterinarioEqAlimentos extends javax.swing.JFrame {
             }
         });
 
+        btnDeletarRelacionamento.setText("Deletar");
+        btnDeletarRelacionamento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeletarRelacionamentoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -129,9 +137,12 @@ public class FrVeterinarioEqAlimentos extends javax.swing.JFrame {
                         .addGap(211, 211, 211)
                         .addComponent(btnRelacionar))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 462, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(19, Short.MAX_VALUE))
+                        .addGap(17, 17, 17)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 462, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(217, 217, 217)
+                        .addComponent(btnDeletarRelacionamento)))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -146,11 +157,13 @@ public class FrVeterinarioEqAlimentos extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbxEquinos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cbxAlimentos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(btnRelacionar)
-                .addGap(30, 30, 30)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(18, 18, 18)
+                .addComponent(btnDeletarRelacionamento)
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         pack();
@@ -168,10 +181,12 @@ public class FrVeterinarioEqAlimentos extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRelacionarActionPerformed
 
     private void grnEquinosAlimentosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_grnEquinosAlimentosMouseClicked
-        if (evt.getClickCount() == 2) {
-            linhaGrdSelecionada();
-        }
+
     }//GEN-LAST:event_grnEquinosAlimentosMouseClicked
+
+    private void btnDeletarRelacionamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeletarRelacionamentoActionPerformed
+        linhaGrdSelecionada();
+    }//GEN-LAST:event_btnDeletarRelacionamentoActionPerformed
 
     private void linhaGrdSelecionada(){
         Object[] relSelecionado = (Object[]) this.getObjectSelectOnGrid();
@@ -207,6 +222,7 @@ public class FrVeterinarioEqAlimentos extends javax.swing.JFrame {
  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnDeletarRelacionamento;
     private javax.swing.JButton btnRelacionar;
     private javax.swing.JComboBox<String> cbxAlimentos;
     private javax.swing.JComboBox<String> cbxEquinos;
