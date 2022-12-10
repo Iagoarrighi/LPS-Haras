@@ -5,6 +5,7 @@
 package com.ifmg.projeto_haras.controller;
 
 import com.ifmg.projeto_haras.model.Cuidador;
+import com.ifmg.projeto_haras.model.Equino;
 import com.ifmg.projeto_haras.model.dao.CuidadorDAO;
 import com.ifmg.projeto_haras.model.exceptions.CuidadorException;
 import com.ifmg.projeto_haras.model.valid.ValidateCuidador;
@@ -16,56 +17,64 @@ import javax.swing.JTable;
  * @author gusta
  */
 public class CuidadorController {
+
     private CuidadorDAO repositorio;
-    
-    public CuidadorController(){
+
+    public CuidadorController() {
         this.repositorio = new CuidadorDAO();
     }
-    
-    public String buscarCuidadoresString(){
+
+    public String buscarCuidadoresString() {
         List<Cuidador> cuidadores = repositorio.findAll();
-        
+
         String cuidadorIdNomeString = "";
         for (Cuidador cuidador : cuidadores) {
-            cuidadorIdNomeString += cuidador.getId()+" - "+cuidador.getNome()+"\n";
+            cuidadorIdNomeString += cuidador.getId() + " - " + cuidador.getNome() + "\n";
         }
-        
+
         return cuidadorIdNomeString;
     }
-    
-    public Cuidador buscarCuidadorPorId(Integer id){
-        if(id == null){
+
+    public Cuidador buscarCuidadorPorId(Integer id) {
+        if (id == null) {
             return null;
         }
         Cuidador cuidador = (Cuidador) repositorio.find(id);
         return cuidador;
     }
-    
-    public void cadastrarCuidador(String nome, String senha, String email, String data){
+
+    public void cadastrarCuidador(String nome, String senha, String email, String data) {
         ValidateCuidador valid = new ValidateCuidador();
         Cuidador novoCuidador = valid.validaCamposEntrada(nome, senha, email, data);
-             
+
         repositorio.save(novoCuidador);
     }
-    
-    public void atualizarCuidador(int idCuidador, String nome, String senha, String email, String data){
+
+    public void atualizarCuidador(int idCuidador, String nome, String senha, String email, String data) {
         ValidateCuidador valid = new ValidateCuidador();
         Cuidador novoCuidador = valid.validaCamposEntrada(nome, senha, email, data);
-        
+
         novoCuidador.setId(idCuidador);
         repositorio.save(novoCuidador);
     }
-    
+
     public void atualizarTabela(JTable grd) {
         Util.jTableShow(grd, new TMCadCuidador(repositorio.findAll()), null);
     }
-    
-    public void excluirCuidador(Cuidador cuidador){
+
+    public void excluirCuidador(Cuidador cuidador) {
         System.out.println(cuidador.getId());
         if (cuidador != null) {
             repositorio.delete(cuidador);
-        }else{
+        } else {
             throw new CuidadorException("Error: Cuidador inexistente.");
         }
     }
+
+    public void atualizarTabelaEquino(JTable grdEquino, Integer id) {
+        Cuidador cui= (Cuidador)repositorio.find(id);
+        List<Equino> equinos = cui.getEquinos();
+        Util.jTableShow(grdEquino, new TMCadEquino(equinos),null);
+    }
+
 }

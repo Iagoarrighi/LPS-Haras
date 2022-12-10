@@ -4,9 +4,13 @@
  */
 package com.ifmg.projeto_haras.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Data;
 
 /**
@@ -18,6 +22,8 @@ import lombok.Data;
 @PrimaryKeyJoinColumn(name = "id")
 public class Cuidador extends Pessoa {
     private LocalDate dataInicioContrato;
+    @OneToMany(mappedBy = "cuidador",cascade = CascadeType.ALL)
+    private List<Equino> equinos = new ArrayList<>();
     
     public Cuidador(){
         super();
