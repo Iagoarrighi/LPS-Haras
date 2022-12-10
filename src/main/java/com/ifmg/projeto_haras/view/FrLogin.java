@@ -114,8 +114,12 @@ public class FrLogin extends javax.swing.JFrame {
 
     private void btnAcessarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAcessarActionPerformed
         // TODO add your handling code here:
-        FrAdministrador frAdm = new FrAdministrador(this);
-        frAdm.setVisible(true);
+//        FrAdministrador frAdm = new FrAdministrador(this);
+//        frAdm.setVisible(true);
+//        this.setVisible(false);
+
+        FrVeterinario frVet = new FrVeterinario(this);
+        frVet.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnAcessarActionPerformed
 

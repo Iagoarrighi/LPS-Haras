@@ -23,6 +23,25 @@ public class AlimentoController {
         this.repositorio = new AlimentoDAO();
     }
     
+    public Alimento buscarProprietarioPorId(Integer id){
+        if(id == null){
+            return null;
+        }
+        Alimento alimento = (Alimento) repositorio.find(id);
+        return alimento;
+    }
+    
+    public String buscarAlimentosString(){
+        List<Alimento> alimentos = repositorio.findAll();
+        
+        String alimentoIdNomeString = "";
+        for (Alimento ali : alimentos) {
+            alimentoIdNomeString += ali.getId()+" - "+ali.getNome()+"\n";
+        }
+        
+        return alimentoIdNomeString;
+    }
+    
     public void cadastrarAlimento(String nome, String preco){
         ValidateAlimento valid = new ValidateAlimento();
         Alimento novoAlimento = valid.validaCamposEntrada(nome, preco);

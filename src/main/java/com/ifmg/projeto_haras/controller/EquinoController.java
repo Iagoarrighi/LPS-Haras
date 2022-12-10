@@ -4,6 +4,7 @@
  */
 package com.ifmg.projeto_haras.controller;
 
+import com.ifmg.projeto_haras.model.Alimento;
 import com.ifmg.projeto_haras.model.Baia;
 import com.ifmg.projeto_haras.model.Cuidador;
 import com.ifmg.projeto_haras.model.Equino;
@@ -12,6 +13,7 @@ import com.ifmg.projeto_haras.model.Veterinario;
 import com.ifmg.projeto_haras.model.dao.EquinoDAO;
 import com.ifmg.projeto_haras.model.exceptions.EquinoException;
 import com.ifmg.projeto_haras.model.valid.ValidateEquino;
+import java.util.List;
 import javax.swing.JTable;
 
 /**
@@ -32,6 +34,28 @@ public class EquinoController {
         }
         String[] novoIdNome = idNome.split(" - ");
         return Integer.parseInt(novoIdNome[0]);
+    }
+    
+    public void relacionarEquinoAlimento(String equino, String alimento){
+        Integer idEquino = getIdDoidNome(equino);
+        Integer idAlimento = getIdDoidNome(alimento);
+        
+        Equino equinoO = this.buscarProprietarioPorId(idEquino);
+        
+        AlimentoController alimentoController = new AlimentoController();
+        Alimento alimentoO = alimentoController.buscarProprietarioPorId(idAlimento);
+                
+        equinoO.getAlimentos().add(alimentoO);
+        
+        repositorio.save(equinoO);
+    }
+    
+    public Equino buscarProprietarioPorId(Integer id){
+        if(id == null){
+            return null;
+        }
+        Equino equino = (Equino) repositorio.find(id);
+        return equino;
     }
 
     public void cadastrarEquino(String nome, String sexo,
@@ -99,6 +123,18 @@ public class EquinoController {
 
     public void atualizarTabela(JTable grd) {
         Util.jTableShow(grd, new TMCadEquino(repositorio.findAll()), null);
+    }
+    
+    public void atualizarTabelaRelacionamentos(JTable grd) {
+        Util.jTableShow(grd, new TMShowRelacaoEqAlimento(repositorio.getLeftJoinAlimentos()), null);
+    }
+    
+    public void excluirRelacionamentoAlimentos(Integer equino_id, Integer alimento_id){
+        if (equino_id != null && alimento_id != null) {
+            repositorio.deleteRelacionamentoAlimentos(equino_id, alimento_id);
+        }else{
+            throw new EquinoException("Error: Relacionamento inexistente.");
+        }
     }
 
     public void excluirEquino(Equino equino) {

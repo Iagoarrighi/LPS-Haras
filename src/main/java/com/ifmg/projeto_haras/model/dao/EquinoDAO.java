@@ -72,4 +72,28 @@ public class EquinoDAO implements IDao {
         List lst = qry.getResultList();
         return lst;
     }
+    
+    public List<Object[]> getLeftJoinAlimentos(){
+        sql = " SELECT e.id, e.nome, a.id, a.nome FROM equino e "
+                + " LEFT JOIN equino_alimento ea ON e.id = ea.equino_id "
+                + "JOIN alimento a ON ea.alimento_id = a.id ";
+
+        qry = this.entityManager.createNativeQuery(sql);
+        
+        List lst = qry.getResultList();
+        return lst;
+    }
+    
+    public void deleteRelacionamentoAlimentos(Integer equino_id, Integer alimento_id){
+        System.err.println(equino_id);
+        System.err.println(alimento_id);
+        this.entityManager.getTransaction().begin();
+        sql = " DELETE FROM equino_alimento "
+                + " WHERE equino_id = (?1)"
+                + " AND alimento_id = (?2)";
+        
+        
+        this.entityManager.createNativeQuery(sql).setParameter(1, equino_id).setParameter(2, alimento_id).executeUpdate();
+        this.entityManager.getTransaction().commit();
+    }
 }

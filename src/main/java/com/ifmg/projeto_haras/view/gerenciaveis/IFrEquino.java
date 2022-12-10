@@ -424,7 +424,6 @@ public class IFrEquino extends javax.swing.JInternalFrame {
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         Equino equinoEditando = (Equino) this.getObjectSelectOnGrid();
-        System.out.println("ID EQUINO EDITANDO: "+equinoEditando.getId());
         if (equinoEditando == null)
             JOptionPane.showMessageDialog(this, "Primeiro selecione um registro na tabela.");
         else {

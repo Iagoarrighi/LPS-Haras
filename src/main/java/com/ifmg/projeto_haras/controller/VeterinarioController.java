@@ -4,6 +4,7 @@
  */
 package com.ifmg.projeto_haras.controller;
 
+import com.ifmg.projeto_haras.model.Equino;
 import com.ifmg.projeto_haras.model.Veterinario;
 import com.ifmg.projeto_haras.model.dao.VeterinarioDAO;
 import com.ifmg.projeto_haras.model.exceptions.VeterinarioException;
@@ -20,6 +21,18 @@ public class VeterinarioController {
     
     public VeterinarioController(){
         this.repositorio = new VeterinarioDAO();
+    }
+    
+    public String buscarEquinosString(Integer id){
+        Veterinario vet = (Veterinario) repositorio.find(id);
+        List<Equino> equinos = vet.getEquinos();
+        
+        String equinoIdNomeString = "";
+        for (Equino equino : equinos) {
+            equinoIdNomeString += equino.getId()+" - "+equino.getNome()+"\n";
+        }
+        
+        return equinoIdNomeString;
     }
     
     public String buscarVeterinariosString(){
@@ -58,6 +71,12 @@ public class VeterinarioController {
     
     public void atualizarTabela(JTable grd) {
         Util.jTableShow(grd, new TMCadVeterinario(repositorio.findAll()), null);
+    }
+    
+    public void atualizarTabelaEquinos(JTable grd, Integer id) {
+        Veterinario vet = (Veterinario) repositorio.find(id);
+        List<Equino> equinos = vet.getEquinos();
+         Util.jTableShow(grd, new TMCadEquino(equinos), null);
     }
     
     public void excluirVeterinario(Veterinario veterinario){
