@@ -36,7 +36,7 @@ public class FrVeterinarioEqAlimentos extends javax.swing.JFrame {
         equinoCombobox();
         alimentoCombobox();
         
-        equinoController.atualizarTabelaRelacionamentos(grnEquinosAlimentos);
+        equinoController.atualizarTabelaRelacionamentos(grdEquinosAlimentos);
     }
     
     public void equinoCombobox() {
@@ -67,7 +67,7 @@ public class FrVeterinarioEqAlimentos extends javax.swing.JFrame {
         cbxEquinos = new javax.swing.JComboBox<>();
         cbxAlimentos = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
-        grnEquinosAlimentos = new javax.swing.JTable();
+        grdEquinosAlimentos = new javax.swing.JTable();
         lblTitulo = new javax.swing.JLabel();
         lblEquinoCbx = new javax.swing.JLabel();
         lblAlimentoCbx = new javax.swing.JLabel();
@@ -76,7 +76,7 @@ public class FrVeterinarioEqAlimentos extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        grnEquinosAlimentos.setModel(new javax.swing.table.DefaultTableModel(
+        grdEquinosAlimentos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
                 {},
@@ -87,12 +87,12 @@ public class FrVeterinarioEqAlimentos extends javax.swing.JFrame {
 
             }
         ));
-        grnEquinosAlimentos.addMouseListener(new java.awt.event.MouseAdapter() {
+        grdEquinosAlimentos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                grnEquinosAlimentosMouseClicked(evt);
+                grdEquinosAlimentosMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(grnEquinosAlimentos);
+        jScrollPane1.setViewportView(grdEquinosAlimentos);
 
         lblTitulo.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
         lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -177,18 +177,18 @@ public class FrVeterinarioEqAlimentos extends javax.swing.JFrame {
             equinoController.relacionarEquinoAlimento(equino, alimento);
         }
         
-        equinoController.atualizarTabelaRelacionamentos(grnEquinosAlimentos);
+        equinoController.atualizarTabelaRelacionamentos(grdEquinosAlimentos);
     }//GEN-LAST:event_btnRelacionarActionPerformed
 
-    private void grnEquinosAlimentosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_grnEquinosAlimentosMouseClicked
+    private void grdEquinosAlimentosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_grdEquinosAlimentosMouseClicked
 
-    }//GEN-LAST:event_grnEquinosAlimentosMouseClicked
+    }//GEN-LAST:event_grdEquinosAlimentosMouseClicked
 
     private void btnDeletarRelacionamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeletarRelacionamentoActionPerformed
-        linhaGrdSelecionada();
+        deletarlinhaGrdSelecionada();
     }//GEN-LAST:event_btnDeletarRelacionamentoActionPerformed
 
-    private void linhaGrdSelecionada(){
+    private void deletarlinhaGrdSelecionada(){
         Object[] relSelecionado = (Object[]) this.getObjectSelectOnGrid();
         
         System.out.println("AAAAAAAAAA: "+ relSelecionado[0].toString());
@@ -207,14 +207,14 @@ public class FrVeterinarioEqAlimentos extends javax.swing.JFrame {
             }
         }
         
-        equinoController.atualizarTabelaRelacionamentos(grnEquinosAlimentos);
+        equinoController.atualizarTabelaRelacionamentos(grdEquinosAlimentos);
     }
     
     private Object getObjectSelectOnGrid() {
-        int rowCliked = grnEquinosAlimentos.getSelectedRow();
+        int rowCliked = grdEquinosAlimentos.getSelectedRow();
         Object obj = null;
         if (rowCliked >= 0) {
-            obj = grnEquinosAlimentos.getModel().getValueAt(rowCliked, -1);
+            obj = grdEquinosAlimentos.getModel().getValueAt(rowCliked, -1);
         }
         return obj;
     }
@@ -226,7 +226,7 @@ public class FrVeterinarioEqAlimentos extends javax.swing.JFrame {
     private javax.swing.JButton btnRelacionar;
     private javax.swing.JComboBox<String> cbxAlimentos;
     private javax.swing.JComboBox<String> cbxEquinos;
-    private javax.swing.JTable grnEquinosAlimentos;
+    private javax.swing.JTable grdEquinosAlimentos;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblAlimentoCbx;
     private javax.swing.JLabel lblEquinoCbx;

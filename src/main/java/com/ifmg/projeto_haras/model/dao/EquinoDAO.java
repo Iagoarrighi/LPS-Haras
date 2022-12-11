@@ -29,6 +29,7 @@ public class EquinoDAO implements IDao {
         Equino equino = (Equino) obj;
         this.entityManager.getTransaction().begin();
         if (equino != null) {
+            System.out.println("AQUI AQUI AQUI");
             this.entityManager.merge(equino);
         } else {
             this.entityManager.persist(equino);
@@ -84,6 +85,17 @@ public class EquinoDAO implements IDao {
         return lst;
     }
     
+    public List<Object[]> getLeftJoinServicoAdicional(){
+        sql = " SELECT e.id, e.nome, s.servico_adicional_id, s.servico, es.qtd FROM equino e " +
+                " LEFT JOIN equino_servico es ON e.id = es.equino_id " +
+                " JOIN servicoadicional s ON es.servico_adicional_id = s.servico_adicional_id ";
+
+        qry = this.entityManager.createNativeQuery(sql);
+        
+        List lst = qry.getResultList();
+        return lst;
+    }
+    
     public void deleteRelacionamentoAlimentos(Integer equino_id, Integer alimento_id){
         System.err.println(equino_id);
         System.err.println(alimento_id);
@@ -94,6 +106,17 @@ public class EquinoDAO implements IDao {
         
         
         this.entityManager.createNativeQuery(sql).setParameter(1, equino_id).setParameter(2, alimento_id).executeUpdate();
+        this.entityManager.getTransaction().commit();
+    }
+    
+    public void deleteRelacionamentoServicos(Integer equino_id, Integer servico_id){
+        this.entityManager.getTransaction().begin();
+        sql = " DELETE FROM equino_servico "
+                + " WHERE equino_id = (?1)"
+                + " AND servico_adicional_id = (?2)";
+        
+        
+        this.entityManager.createNativeQuery(sql).setParameter(1, equino_id).setParameter(2, servico_id).executeUpdate();
         this.entityManager.getTransaction().commit();
     }
 }

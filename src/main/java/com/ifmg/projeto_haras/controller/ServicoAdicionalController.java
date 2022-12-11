@@ -8,6 +8,7 @@ import com.ifmg.projeto_haras.model.ServicoAdicional;
 import com.ifmg.projeto_haras.model.dao.ServicoAdicionalDAO;
 import com.ifmg.projeto_haras.model.exceptions.ServicoAdicionalException;
 import com.ifmg.projeto_haras.model.valid.ValidateServicoAdicional;
+import java.util.List;
 import javax.swing.JTable;
 
 /**
@@ -19,6 +20,25 @@ public class ServicoAdicionalController {
     
     public ServicoAdicionalController(){
         this.repositorio = new ServicoAdicionalDAO();
+    }
+    
+    public ServicoAdicional buscarServicoAdicionalPorId(Integer id){
+        if(id == null){
+            return null;
+        }
+        ServicoAdicional servico = (ServicoAdicional) repositorio.find(id);
+        return servico;
+    }
+    
+    public String buscarServicoAdicionalString(){
+        List<ServicoAdicional> servicosAdicionais = repositorio.findAll();
+        
+        String alimentoIdNomeString = "";
+        for (ServicoAdicional servico : servicosAdicionais) {
+            alimentoIdNomeString += servico.getId()+" - "+servico.getServico()+"\n";
+        }
+        
+        return alimentoIdNomeString;
     }
     
     public void cadastrarServico(String servico, String preco){

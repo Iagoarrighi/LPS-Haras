@@ -8,11 +8,14 @@ import com.ifmg.projeto_haras.model.Alimento;
 import com.ifmg.projeto_haras.model.Baia;
 import com.ifmg.projeto_haras.model.Cuidador;
 import com.ifmg.projeto_haras.model.Equino;
+import com.ifmg.projeto_haras.model.EquinoServico;
 import com.ifmg.projeto_haras.model.Proprietario;
+import com.ifmg.projeto_haras.model.ServicoAdicional;
 import com.ifmg.projeto_haras.model.Veterinario;
 import com.ifmg.projeto_haras.model.dao.EquinoDAO;
 import com.ifmg.projeto_haras.model.exceptions.EquinoException;
 import com.ifmg.projeto_haras.model.valid.ValidateEquino;
+import com.ifmg.projeto_haras.model.valid.ValidateQtdEqServico;
 import java.util.List;
 import javax.swing.JTable;
 
@@ -44,8 +47,33 @@ public class EquinoController {
         
         AlimentoController alimentoController = new AlimentoController();
         Alimento alimentoO = alimentoController.buscarProprietarioPorId(idAlimento);
-                
-        equinoO.getAlimentos().add(alimentoO);
+        
+        if(!equinoO.getAlimentos().contains(alimentoO)){
+            equinoO.getAlimentos().add(alimentoO);
+            repositorio.save(equinoO);
+        }   
+    }
+    
+    public void relacionarEquinoServico(String equino, String servico, String quantidade){
+        Integer idEquino = getIdDoidNome(equino);
+        Integer idServico = getIdDoidNome(servico);
+        
+        ValidateQtdEqServico valid = new ValidateQtdEqServico();
+        
+        Integer quantidadeInt = valid.validaQuantidade(quantidade);
+        
+        Equino equinoO = this.buscarProprietarioPorId(idEquino);
+        
+        ServicoAdicionalController servicoController = new ServicoAdicionalController();
+        ServicoAdicional servicoO = servicoController.buscarServicoAdicionalPorId(idServico);
+        
+        EquinoServico equinoServico = new EquinoServico();
+        
+        equinoServico.setEquino(equinoO);
+        equinoServico.setServicoAdicional(servicoO);
+        equinoServico.setQtd(quantidadeInt);
+        
+        equinoO.getEquinosServico().add(equinoServico);
         
         repositorio.save(equinoO);
     }
@@ -129,9 +157,27 @@ public class EquinoController {
         Util.jTableShow(grd, new TMShowRelacaoEqAlimento(repositorio.getLeftJoinAlimentos()), null);
     }
     
+    public void atualizarTabelaRelacionamentosServicos(JTable grd){
+        Util.jTableShow(grd, new TMShowRelacaoEqServico(repositorio.getLeftJoinServicoAdicional()), null);
+    }
+    
     public void excluirRelacionamentoAlimentos(Integer equino_id, Integer alimento_id){
         if (equino_id != null && alimento_id != null) {
             repositorio.deleteRelacionamentoAlimentos(equino_id, alimento_id);
+            Equino equinoO = this.buscarProprietarioPorId(equino_id);
+            equinoO.getAlimentos().clear();
+            
+        }else{
+            throw new EquinoException("Error: Relacionamento inexistente.");
+        }
+    }
+    
+    public void excluirRelacionamentoServicos(Integer equino_id, Integer servico_id){
+        if (equino_id != null && servico_id != null) {
+            repositorio.deleteRelacionamentoServicos(equino_id, servico_id);
+            Equino equinoO = this.buscarProprietarioPorId(equino_id);
+            equinoO.getEquinosServico().clear();
+            
         }else{
             throw new EquinoException("Error: Relacionamento inexistente.");
         }

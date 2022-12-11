@@ -9,6 +9,7 @@ import com.ifmg.projeto_haras.controller.EquinoController;
 import com.ifmg.projeto_haras.controller.TMCadEquino;
 import com.ifmg.projeto_haras.controller.VeterinarioController;
 import com.ifmg.projeto_haras.view.veterinario.FrVeterinarioEqAlimentos;
+import com.ifmg.projeto_haras.view.veterinario.FrVeterinarioEqServico;
 import javax.swing.JFrame;
 
 /**
@@ -75,6 +76,11 @@ public class FrVeterinario extends javax.swing.JFrame {
         jScrollPane1.setViewportView(grdEquinos);
 
         btnRelacionarServicos.setText("Relacionar");
+        btnRelacionarServicos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRelacionarServicosActionPerformed(evt);
+            }
+        });
 
         lblTitutoEquinos.setText("Equinos responsáveis");
 
@@ -139,6 +145,11 @@ public class FrVeterinario extends javax.swing.JFrame {
         FrVeterinarioEqAlimentos frVetEqAli = new FrVeterinarioEqAlimentos(this);
         frVetEqAli.setVisible(true);
     }//GEN-LAST:event_btnTelaRelAlimentoActionPerformed
+
+    private void btnRelacionarServicosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRelacionarServicosActionPerformed
+        FrVeterinarioEqServico frVetEqServ = new FrVeterinarioEqServico(this);
+        frVetEqServ.setVisible(true);
+    }//GEN-LAST:event_btnRelacionarServicosActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
