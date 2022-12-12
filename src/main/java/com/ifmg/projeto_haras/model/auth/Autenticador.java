@@ -32,6 +32,9 @@ public abstract class Autenticador {
     }
     
     public static String textToHash(String texto) throws NoSuchAlgorithmException{
+        if(texto.isEmpty()){
+            return "";
+        }
         return toHexString(getSHA(texto));
     }
 

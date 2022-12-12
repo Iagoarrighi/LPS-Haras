@@ -14,7 +14,7 @@ import java.time.LocalDate;
  */
 public class ValidateCuidador {
     public Cuidador validaCamposEntrada(String nome, String senha, String email, String data){
-        Cuidador cuidador = new Cuidador(nome, senha, email, LocalDate.parse(data));
+        Cuidador cuidador = new Cuidador(nome, senha, email, null);
         if (nome.isEmpty()) {
             throw new CuidadorException("Error - Campo vazio: 'nome'.");
         }
@@ -27,7 +27,7 @@ public class ValidateCuidador {
             throw new CuidadorException("Error - Campo vazio: 'email'.");
         }
         cuidador.setEmail(email);
-        if (data.isEmpty()) {
+        if(data.equals("    -  -  ")){
             throw new CuidadorException("Error - Campo vazio: 'data de inicio de contrato'.");
         }
         cuidador.setDataInicioContrato(LocalDate.parse(data));

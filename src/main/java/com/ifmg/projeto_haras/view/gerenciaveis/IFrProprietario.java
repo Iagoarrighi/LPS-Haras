@@ -4,9 +4,13 @@
  */
 package com.ifmg.projeto_haras.view.gerenciaveis;
 
+import com.ifmg.estudojpa.model.auth.Autenticador;
 import com.ifmg.projeto_haras.controller.ProprietarioController;
 import com.ifmg.projeto_haras.model.Proprietario;
 import com.ifmg.projeto_haras.model.exceptions.ProprietarioException;
+import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -48,7 +52,7 @@ public class IFrProprietario extends javax.swing.JInternalFrame {
     public void preencherFormulario(Proprietario p){
         edtNome.setText(p.getNome());
         edtEmail.setText(p.getEmail());
-        edtSenha.setText(p.getSenha());
+        edtSenha.setText("");
         edtCPF.setText(p.getCpf());
     }
 
@@ -272,10 +276,12 @@ public class IFrProprietario extends javax.swing.JInternalFrame {
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         try {
             if (idProprietarioEditando > 0) {
-                proprietarioController.atualizarProprietario(idProprietarioEditando, edtNome.getText(), edtSenha.getText(), edtEmail.getText(), edtCPF.getText());
+                proprietarioController.atualizarProprietario(idProprietarioEditando, edtNome.getText(),
+                        Autenticador.textToHash(edtSenha.getText()), edtEmail.getText(), edtCPF.getText());
                 idProprietarioEditando = -1;
             } else {
-                proprietarioController.cadastrarProprietario(edtNome.getText(), edtSenha.getText(), edtEmail.getText(), edtCPF.getText());
+                proprietarioController.cadastrarProprietario(edtNome.getText(),
+                        Autenticador.textToHash(edtSenha.getText()), edtEmail.getText(), edtCPF.getText());
             }
 
             proprietarioController.atualizarTabela(grdProprietario);
@@ -284,6 +290,8 @@ public class IFrProprietario extends javax.swing.JInternalFrame {
         } catch (ProprietarioException e) {
             System.err.println(e.getMessage());
             JOptionPane.showMessageDialog(this, e.getMessage());
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(IFrProprietario.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
 

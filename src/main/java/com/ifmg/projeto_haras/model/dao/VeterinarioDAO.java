@@ -23,6 +23,24 @@ public class VeterinarioDAO implements IDao {
     public VeterinarioDAO(){
         entityManager = Database.getInstance().getEntityManager();
     }
+    
+    public Integer getVeterinarioByEmailAndSenha(String email, String senha){
+        sql = " SELECT v "
+                + " FROM Veterinario v "
+                + " WHERE email = :email"
+                + " AND senha = :senha ";
+        qry = this.entityManager.createQuery(sql);
+        qry.setParameter("email", email);
+        qry.setParameter("senha", senha);
+        
+        List<Veterinario> lst = qry.getResultList();
+
+        if (lst.isEmpty()) {
+            return 0;
+        } else {
+            return lst.get(0).getId();
+        }
+    }
 
     
     @Override

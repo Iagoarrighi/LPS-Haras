@@ -4,9 +4,13 @@
  */
 package com.ifmg.projeto_haras.view.gerenciaveis;
 
+import com.ifmg.estudojpa.model.auth.Autenticador;
 import com.ifmg.projeto_haras.controller.CuidadorController;
 import com.ifmg.projeto_haras.model.Cuidador;
 import com.ifmg.projeto_haras.model.exceptions.CuidadorException;
+import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -46,7 +50,7 @@ public class IFrCuidador extends javax.swing.JInternalFrame {
     public void preencherFormulario(Cuidador v){
         edtNome.setText(v.getNome());
         edtEmail.setText(v.getEmail());
-        edtSenha.setText(v.getSenha());
+        edtSenha.setText("");
         edtDataInicioContrato.setText(String.valueOf(v.getDataInicioContrato()));
     }
 
@@ -272,10 +276,14 @@ public class IFrCuidador extends javax.swing.JInternalFrame {
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         try {
             if (idCuidadorEditando > 0) {
-                cuidadorController.atualizarCuidador(idCuidadorEditando, edtNome.getText(), edtSenha.getText(), edtEmail.getText(), edtDataInicioContrato.getText());
+                cuidadorController.atualizarCuidador(idCuidadorEditando, edtNome.getText(),
+                        Autenticador.textToHash(edtSenha.getText()), edtEmail.getText(),
+                        edtDataInicioContrato.getText());
                 idCuidadorEditando = -1;
             } else {
-                cuidadorController.cadastrarCuidador(edtNome.getText(), edtSenha.getText(), edtEmail.getText(), edtDataInicioContrato.getText());
+                cuidadorController.cadastrarCuidador(edtNome.getText(),
+                        Autenticador.textToHash(edtSenha.getText()), edtEmail.getText(),
+                        edtDataInicioContrato.getText());
             }
 
             cuidadorController.atualizarTabela(grdCuidadores);
@@ -284,6 +292,8 @@ public class IFrCuidador extends javax.swing.JInternalFrame {
         } catch (CuidadorException e) {
             System.err.println(e.getMessage());
             JOptionPane.showMessageDialog(this, e.getMessage());
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(IFrCuidador.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
 

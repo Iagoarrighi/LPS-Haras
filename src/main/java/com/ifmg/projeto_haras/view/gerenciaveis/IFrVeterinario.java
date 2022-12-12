@@ -4,9 +4,13 @@
  */
 package com.ifmg.projeto_haras.view.gerenciaveis;
 
+import com.ifmg.estudojpa.model.auth.Autenticador;
 import com.ifmg.projeto_haras.controller.VeterinarioController;
 import com.ifmg.projeto_haras.model.Veterinario;
 import com.ifmg.projeto_haras.model.exceptions.VeterinarioException;
+import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -48,7 +52,7 @@ public class IFrVeterinario extends javax.swing.JInternalFrame {
     public void preencherFormulario(Veterinario v){
         edtNome.setText(v.getNome());
         edtEmail.setText(v.getEmail());
-        edtSenha.setText(v.getSenha());
+        edtSenha.setText("");
         edtCrmv.setText(v.getCrmv());
     }
 
@@ -262,10 +266,12 @@ public class IFrVeterinario extends javax.swing.JInternalFrame {
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         try {
             if (idVeterinarioEditando > 0) {
-                veterinarioController.atualizarVeterinario(idVeterinarioEditando, edtNome.getText(), edtSenha.getText(), edtEmail.getText(), edtCrmv.getText());
+                veterinarioController.atualizarVeterinario(idVeterinarioEditando, edtNome.getText(),
+                        Autenticador.textToHash(edtSenha.getText()), edtEmail.getText(), edtCrmv.getText());
                 idVeterinarioEditando = -1;
             } else {
-                veterinarioController.cadastrarVeterinario(edtNome.getText(), edtSenha.getText(), edtEmail.getText(), edtCrmv.getText());
+                veterinarioController.cadastrarVeterinario(edtNome.getText(),
+                        Autenticador.textToHash(edtSenha.getText()), edtEmail.getText(), edtCrmv.getText());
             }
 
             veterinarioController.atualizarTabela(grdVeterinarios);
@@ -274,6 +280,8 @@ public class IFrVeterinario extends javax.swing.JInternalFrame {
         } catch (VeterinarioException e) {
             System.err.println(e.getMessage());
             JOptionPane.showMessageDialog(this, e.getMessage());
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(IFrVeterinario.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
 

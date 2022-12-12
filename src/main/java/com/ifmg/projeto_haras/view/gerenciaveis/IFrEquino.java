@@ -244,29 +244,11 @@ public class IFrEquino extends javax.swing.JInternalFrame {
         lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTitulo.setText("Gerenciamento dos Equinos");
 
-        cbxProprietario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbxProprietarioActionPerformed(evt);
-            }
-        });
-
         lblProprietario.setText("Proprietário:");
 
         lblCuidador.setText("Cuidador:");
 
-        cbxVeterinario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbxVeterinarioActionPerformed(evt);
-            }
-        });
-
         lblVeterinario.setText("Veterinário:");
-
-        cbxBaia.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbxBaiaActionPerformed(evt);
-            }
-        });
 
         lblBaia.setText("Baia:");
 
@@ -381,18 +363,6 @@ public class IFrEquino extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void cbxProprietarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxProprietarioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbxProprietarioActionPerformed
-
-    private void cbxVeterinarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxVeterinarioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbxVeterinarioActionPerformed
-
-    private void cbxBaiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxBaiaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbxBaiaActionPerformed
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
         idEquinoEditando = -1;

@@ -22,6 +22,24 @@ public class ProprietarioDAO implements IDao{
     public ProprietarioDAO(){
         entityManager = Database.getInstance().getEntityManager();
     }
+    
+    public Integer getProprietarioByEmailAndSenha(String email, String senha){
+        sql = " SELECT p "
+                + " FROM Proprietario p "
+                + " WHERE email = :email"
+                + " AND senha = :senha ";
+        qry = this.entityManager.createQuery(sql);
+        qry.setParameter("email", email);
+        qry.setParameter("senha", senha);
+        
+        List<Proprietario> lst = qry.getResultList();
+
+        if (lst.isEmpty()) {
+            return 0;
+        } else {
+            return lst.get(0).getId();
+        }
+    }
 
     
     @Override
