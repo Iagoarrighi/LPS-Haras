@@ -18,7 +18,8 @@ public class TMCadProprietario extends AbstractTableModel {
     private final int COL_ID = 0;
     private final int COL_NOME = 1;   
     private final int COL_EMAIL = 2;
-    private final int COL_CPF = 3;    
+    private final int COL_CPF = 3;
+     private final int COL_LIMFATURA = 4;  
 
     public TMCadProprietario(List<Proprietario> lstProprietario) {        
         lista = lstProprietario;        
@@ -31,7 +32,7 @@ public class TMCadProprietario extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        return 4;
+        return 5;
     }
 
     @Override
@@ -54,6 +55,8 @@ public class TMCadProprietario extends AbstractTableModel {
                     return aux.getEmail();
                 case COL_CPF:
                     return aux.getCpf();
+                case COL_LIMFATURA:
+                    return aux.getLimiteFatura();
                  
                
                 default: 
@@ -80,6 +83,8 @@ public class TMCadProprietario extends AbstractTableModel {
                 return "E-Mail";
             case COL_CPF:
                 return "CPF";
+            case COL_LIMFATURA:
+                return "Limite Fatura";
                         
             default:
                 break;

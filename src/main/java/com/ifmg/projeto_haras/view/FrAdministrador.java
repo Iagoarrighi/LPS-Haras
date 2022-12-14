@@ -44,6 +44,7 @@ public class FrAdministrador extends javax.swing.JFrame {
         mnItemGerenciarEquino = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         mitemGerenciarProprietario = new javax.swing.JMenuItem();
+        mitemPagarFatura = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         mitemGerenciarCuidador = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
@@ -94,6 +95,14 @@ public class FrAdministrador extends javax.swing.JFrame {
             }
         });
         jMenu2.add(mitemGerenciarProprietario);
+
+        mitemPagarFatura.setText("Pagar fatura");
+        mitemPagarFatura.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mitemPagarFaturaActionPerformed(evt);
+            }
+        });
+        jMenu2.add(mitemPagarFatura);
 
         jMenuBar1.add(jMenu2);
 
@@ -223,6 +232,10 @@ public class FrAdministrador extends javax.swing.JFrame {
         ifrServicoAdicional.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
+    private void mitemPagarFaturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitemPagarFaturaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mitemPagarFaturaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane deskPaneAdm;
@@ -240,6 +253,7 @@ public class FrAdministrador extends javax.swing.JFrame {
     private javax.swing.JMenuItem mitemGerenciarProprietario;
     private javax.swing.JMenu mitemGerenciarSerAdicionais;
     private javax.swing.JMenuItem mitemGerenciarVeterinario;
+    private javax.swing.JMenuItem mitemPagarFatura;
     private javax.swing.JMenuItem mnItemGerenciarEquino;
     // End of variables declaration//GEN-END:variables
 }

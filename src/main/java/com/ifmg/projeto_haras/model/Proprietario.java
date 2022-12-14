@@ -4,10 +4,15 @@
  */
 package com.ifmg.projeto_haras.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
+import java.time.LocalDate;
+import java.util.List;
 import lombok.Data;
+import org.hibernate.annotations.ManyToAny;
 
 /**
  *
@@ -18,16 +23,19 @@ import lombok.Data;
 @PrimaryKeyJoinColumn(name = "id")
 public class Proprietario extends Pessoa {
     private String cpf;
+    private Integer limiteFatura;
     
-    @OneToOne(mappedBy = "proprietario")
-    private Fatura fatura;
+    @OneToMany(mappedBy = "proprietario", cascade = CascadeType.ALL)
+    private List<Fatura> faturas;
+    @OneToMany(mappedBy = "proprietario", cascade = CascadeType.ALL)
+    private List<Equino> equinos;
     
     public Proprietario(){
         super();
         this.cpf = "";
     }
 
-    public Proprietario(String cpf, String nome, String senha, String email) {
+    public Proprietario(String cpf, String nome, String senha, String email, Integer limiteFatura) {
         super(nome, senha, email);
         this.cpf = cpf;
     }

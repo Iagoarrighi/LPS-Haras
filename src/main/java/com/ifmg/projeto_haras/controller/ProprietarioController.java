@@ -4,6 +4,7 @@
  */
 package com.ifmg.projeto_haras.controller;
 
+import com.ifmg.projeto_haras.model.Equino;
 import com.ifmg.projeto_haras.model.Proprietario;
 import com.ifmg.projeto_haras.model.dao.ProprietarioDAO;
 import com.ifmg.projeto_haras.model.exceptions.ProprietarioException;
@@ -20,6 +21,12 @@ public class ProprietarioController {
     
     public ProprietarioController(){
         this.repositorio = new ProprietarioDAO();
+    }
+    
+    public void atualizarTabelaEquinos(JTable grd, Integer id) {
+        Proprietario prop = (Proprietario) repositorio.find(id);
+        List<Equino> equinos = prop.getEquinos();
+         Util.jTableShow(grd, new TMCadEquino(equinos), null);
     }
     
     public String buscarProprietariosString(){
@@ -41,16 +48,18 @@ public class ProprietarioController {
         return prop;
     }
     
-    public void cadastrarProprietario(String nome, String senha, String email, String cpf){
+    public void cadastrarProprietario(String nome, String senha, String email, String cpf,
+            String limiteFatura){
         ValidateProprietario valid = new ValidateProprietario();
-        Proprietario novoCuidador = valid.validaCamposEntrada(nome, senha, email, cpf);
+        Proprietario novoCuidador = valid.validaCamposEntrada(nome, senha, email, cpf, limiteFatura);
              
         repositorio.save(novoCuidador);
     }
     
-    public void atualizarProprietario(int idCuidador, String nome, String senha, String email, String cpf){
+    public void atualizarProprietario(int idCuidador, String nome, String senha, String email, String cpf,
+            String limiteFatura){
         ValidateProprietario valid = new ValidateProprietario();
-        Proprietario novoCuidador = valid.validaCamposEntrada(nome, senha, email, cpf);
+        Proprietario novoCuidador = valid.validaCamposEntrada(nome, senha, email, cpf, limiteFatura);
         
         novoCuidador.setId(idCuidador);
         repositorio.save(novoCuidador);

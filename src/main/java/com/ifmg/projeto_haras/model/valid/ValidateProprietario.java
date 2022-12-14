@@ -6,14 +6,16 @@ package com.ifmg.projeto_haras.model.valid;
 
 import com.ifmg.projeto_haras.model.Proprietario;
 import com.ifmg.projeto_haras.model.exceptions.ProprietarioException;
+import java.time.LocalDate;
 
 /**
  *
  * @author gusta
  */
 public class ValidateProprietario {
-    public Proprietario validaCamposEntrada(String nome, String senha, String email, String cpf){
-        Proprietario proprietario = new Proprietario(nome, senha, email, cpf);
+    public Proprietario validaCamposEntrada(String nome, String senha, String email, String cpf,
+        String limiteFatura){
+        Proprietario proprietario = new Proprietario(nome, senha, email, cpf, null);
         if (nome.isEmpty()) {
             throw new ProprietarioException("Error - Campo vazio: 'nome'.");
         }
@@ -33,9 +35,20 @@ public class ValidateProprietario {
             throw new ProprietarioException("Error - Campo Inválido: 'cpf'.");
         }
         proprietario.setCpf(cpf);
+        if(limiteFatura.isEmpty()){
+            throw new ProprietarioException("Error - Campo vazio: 'limite fatura'.");
+        }
+        if(isInteger(limiteFatura)){
+            throw new ProprietarioException("Error - Campo não é inteiro: 'limite fatura'.");
+        }
+        proprietario.setLimiteFatura(Integer.parseInt(limiteFatura));
         
         
         return proprietario;
+    }
+    
+    private boolean isInteger(String str) {
+        return str != null && str.matches("[0-9]*");
     }
     
      private boolean validaCPF(String cpf){        

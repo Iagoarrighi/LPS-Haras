@@ -8,7 +8,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import java.time.LocalDate;
 import lombok.Data;
 /**
  *
@@ -23,7 +25,9 @@ public class Fatura {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Boolean foiPaga;
-    @OneToOne(cascade = CascadeType.ALL)
+    private LocalDate diaPagamento;
+    private Double valor;
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Proprietario proprietario;
     
     
@@ -32,7 +36,7 @@ public class Fatura {
         this.foiPaga = false;
     }
     
-    public Fatura(Boolean foiPaga){
+    public Fatura(Boolean foiPaga, Double valor){
         this.id = null;
         this.foiPaga = foiPaga;
     }
