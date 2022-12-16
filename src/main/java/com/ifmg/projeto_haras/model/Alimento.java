@@ -10,8 +10,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 
 /**
  *
@@ -28,6 +30,8 @@ public class Alimento {
     private Double preco;
     @ManyToMany(mappedBy = "alimentos")
     private List<Equino> equinos = new ArrayList<>();
+    @CreationTimestamp
+    private Date timestamp;
     
     
     public Alimento(){

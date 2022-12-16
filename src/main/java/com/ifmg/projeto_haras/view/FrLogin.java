@@ -6,6 +6,7 @@ package com.ifmg.projeto_haras.view;
 
 import com.ifmg.estudojpa.model.auth.Autenticador;
 import com.ifmg.projeto_haras.controller.AutenticadorController;
+import com.ifmg.projeto_haras.controller.FaturaController;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -166,6 +167,8 @@ public class FrLogin extends javax.swing.JFrame {
             this.setVisible(false);
         }
         
+        FaturaController faturaController = new FaturaController();
+        faturaController.criarFatura();
         lblErroLogin.setVisible(true);
     }//GEN-LAST:event_btnAcessarActionPerformed
 

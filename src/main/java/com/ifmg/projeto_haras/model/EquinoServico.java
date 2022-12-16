@@ -12,8 +12,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
+import java.util.Date;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.CreationTimestamp;
 
 /**
  *
@@ -33,6 +35,8 @@ public class EquinoServico {
     @EmbeddedId
     private EquinoServicoId pk = new EquinoServicoId();
     private Integer qtd;
+    @CreationTimestamp
+    private Date timestamp;
 
     @Transient
     public Equino getEquino() {

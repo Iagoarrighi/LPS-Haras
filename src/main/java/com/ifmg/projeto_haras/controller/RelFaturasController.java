@@ -7,10 +7,12 @@ package com.ifmg.projeto_haras.controller;
 import com.ifmg.projeto_haras.model.Alimento;
 import com.ifmg.projeto_haras.model.Equino;
 import com.ifmg.projeto_haras.model.EquinoServico;
+import com.ifmg.projeto_haras.model.Fatura;
 import com.ifmg.projeto_haras.model.Proprietario;
 import com.ifmg.projeto_haras.model.dao.ProprietarioDAO;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.io.FileNotFoundException;
@@ -32,31 +34,28 @@ public class RelFaturasController {
     
     public boolean gerarRelatorio(Integer id){
         Document document = new Document();
-        String arquivoPdf = "relatorioServicos.pdf";
+        String arquivoPdf = "relatorioFaturas.pdf";
         
         try {
             PdfWriter.getInstance(document, new FileOutputStream(arquivoPdf));
             document.open();
             
             Proprietario prop = (Proprietario) repositorio.find(id);
-            List<Equino> equinos = prop.getEquinos();
             
-            Double totalFatura = 0.0;
-            String servicos = "";
-            PdfPTable table = new PdfPTable(2);
-            for (Equino equino : prop.getEquinos()) {
-                table.addCell(String.valueOf(equino.getId())+" - "+equino.getNome());
-                
-                servicos = "";
-                
-                for (EquinoServico equinoServico : equino.getEquinosServico()) {
-                    totalFatura += equinoServico.getServicoAdicional().getPreco();
-                }
-                
-                for (Alimento alimento : equino.getAlimentos()) {
-                    totalFatura += alimento.getPreco();
-                }
-                table.addCell(servicos);
+            String faturas = "";
+            PdfPTable table = new PdfPTable(1);
+            
+            Paragraph p1 = new Paragraph("Proprietário: " + prop.getNome() + "\n\n");
+            document.add(p1);
+
+            for (Fatura fatura : prop.getFaturas()) {
+                table.addCell(
+                        "Id: "+fatura.getId() + "\n" +
+                        "Valor: "+fatura.getValor() + "\n" +
+                        "Criação: "+fatura.getCreate_at() + "\n" +
+                        "Vencimento: "+fatura.getDiaMaxPagamento() + "\n"+
+                        "Valor: "+fatura.getValor()
+                );
             }
             
             document.add(table);

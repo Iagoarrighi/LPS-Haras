@@ -8,6 +8,9 @@ import com.ifmg.projeto_haras.factory.Database;
 import com.ifmg.projeto_haras.model.Fatura;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,6 +25,52 @@ public class FaturaDAO implements IDao {
     public FaturaDAO(){
         entityManager = Database.getInstance().getEntityManager();
     }
+    
+    public Object[] getTotalvalorFaturaAlimentoPorProprietario(Integer id,
+            LocalDate dataIni, LocalDate dataFim){
+        sql = " SELECT pes.id, pes.nome, SUM(a.preco) as TOTAL_ALIMENTO FROM pessoa pes " +
+                " JOIN proprietario p ON pes.id = p.id " +
+                " JOIN equino e ON p.id = e.proprietario_id " +
+                " JOIN equino_alimento ea ON e.id = ea.equino_id " +
+                " JOIN alimento a ON ea.alimento_id = a.id " +
+                " WHERE p.id = (?1) AND (a.timestamp BETWEEN (?2) AND (?3) ) " +
+                " GROUP BY p.id ";
+
+        qry = this.entityManager.createNativeQuery(sql).setParameter(1, id).
+                setParameter(2, asDate(dataIni)).setParameter(3, asDate(dataFim));
+        
+        List<Object[]> lst = qry.getResultList();
+        
+        if(lst.isEmpty())
+            return null;
+        
+        return lst.get(0);
+    }
+    
+        public Object[] getTotalvalorFaturaServicoPorProprietario(Integer id, 
+                LocalDate dataIni, LocalDate dataFim){
+        sql = " SELECT pes.id, pes.nome, SUM(es.qtd*s.preco) as TOTAL_SERVICO FROM pessoa pes " +
+                " JOIN proprietario p ON pes.id = p.id " +
+                " JOIN equino e ON p.id = e.proprietario_id " +
+                " JOIN equino_servico es ON e.id = es.equino_id " +
+                " JOIN servicoadicional s ON s.servico_adicional_id = es.servico_adicional_id " +
+                " WHERE p.id = (?1) AND (es.timestamp BETWEEN (?2) AND (?3) ) " +
+                " GROUP BY p.id ";
+
+        qry = this.entityManager.createNativeQuery(sql).setParameter(1, id).
+                setParameter(2, dataIni).setParameter(3, dataFim);
+        
+        List<Object[]> lst = qry.getResultList();
+        
+        if(lst.isEmpty())
+            return null;
+        
+        return lst.get(0);
+    }
+        
+    private static Date asDate(LocalDate localDate) {
+        return Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+  }
 
     
     @Override

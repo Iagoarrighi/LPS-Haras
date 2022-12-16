@@ -24,16 +24,24 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Component id="lblTitulo" alignment="0" max="32767" attributes="0"/>
-          <Component id="jScrollPane1" alignment="0" pref="0" max="32767" attributes="0"/>
-          <Group type="102" alignment="0" attributes="0">
+          <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="lblSubtitulo" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
-          </Group>
-          <Group type="102" alignment="1" attributes="0">
-              <Component id="jScrollPane3" min="-2" pref="215" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
-              <Component id="jScrollPane2" min="-2" pref="215" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jScrollPane1" max="32767" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jScrollPane3" alignment="0" min="-2" pref="269" max="-2" attributes="0"/>
+                          <Component id="lblSubtitulo" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblAlimentos" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace pref="41" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="lblServicosAdicionais" min="-2" max="-2" attributes="0"/>
+                          <Component id="jScrollPane2" min="-2" pref="281" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -43,13 +51,19 @@
               <Component id="lblTitulo" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="lblSubtitulo" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="174" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="jScrollPane2" alignment="1" min="-2" max="-2" attributes="0"/>
-                  <Component id="jScrollPane3" alignment="1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="27" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="lblAlimentos" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblServicosAdicionais" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Component id="jScrollPane2" pref="252" max="32767" attributes="0"/>
+                  <Component id="jScrollPane3" max="32767" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -77,12 +91,15 @@
               <Table columnCount="0" rowCount="4"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="grdEquinoMouseClicked"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
     <Component class="javax.swing.JLabel" name="lblSubtitulo">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Selecione um Equino"/>
+        <Property name="text" type="java.lang.String" value="Selecione um Equino:"/>
       </Properties>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane2">
@@ -94,15 +111,7 @@
       <SubComponents>
         <Component class="javax.swing.JList" name="lstServicosAdicional">
           <Properties>
-            <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-              <StringArray count="5">
-                <StringItem index="0" value="Item 1"/>
-                <StringItem index="1" value="Item 2"/>
-                <StringItem index="2" value="Item 3"/>
-                <StringItem index="3" value="Item 4"/>
-                <StringItem index="4" value="Item 5"/>
-              </StringArray>
-            </Property>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -119,15 +128,7 @@
       <SubComponents>
         <Component class="javax.swing.JList" name="lstAlimentos">
           <Properties>
-            <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-              <StringArray count="5">
-                <StringItem index="0" value="Item 1"/>
-                <StringItem index="1" value="Item 2"/>
-                <StringItem index="2" value="Item 3"/>
-                <StringItem index="3" value="Item 4"/>
-                <StringItem index="4" value="Item 5"/>
-              </StringArray>
-            </Property>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -135,5 +136,15 @@
         </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JLabel" name="lblAlimentos">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Alimentos:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblServicosAdicionais">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Servi&#xe7;os adicionais:"/>
+      </Properties>
+    </Component>
   </SubComponents>
 </Form>

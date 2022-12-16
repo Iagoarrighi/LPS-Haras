@@ -6,6 +6,12 @@ package com.ifmg.projeto_haras.view;
 
 import com.ifmg.estudojpa.model.auth.Autenticador;
 import com.ifmg.projeto_haras.controller.CuidadorController;
+import com.ifmg.projeto_haras.model.Alimento;
+import com.ifmg.projeto_haras.model.Equino;
+import com.ifmg.projeto_haras.model.EquinoServico;
+import com.ifmg.projeto_haras.model.ServicoAdicional;
+import java.util.List;
+import javax.swing.DefaultListModel;
 
 /**
  *
@@ -18,10 +24,51 @@ public class FrCuidador extends javax.swing.JFrame {
      * Creates new form IFrCuidador
      */
     public FrCuidador() {
-        Autenticador.setIdLogado(1);
         cuidadorController = new CuidadorController();
         initComponents();
         cuidadorController.atualizarTabelaEquino(grdEquino, Autenticador.getIdLogado());
+    }
+    
+    private void preencherListaAlimentos(){
+        Equino equinoTab = (Equino) this.getObjectSelectOnGrid();
+        
+        List<Alimento> eqAlimentos = equinoTab.getAlimentos();
+        
+        DefaultListModel delistAlimentos = new DefaultListModel();
+        
+        for (Alimento eqAlimento : eqAlimentos) {
+            delistAlimentos.addElement("Id: " + eqAlimento.getId()
+                    + " | Nome: " + eqAlimento.getNome());
+        }
+        
+        lstAlimentos.setModel(delistAlimentos);
+    }
+    
+    private void preencherListaServicosAdicionais(){
+        Equino equinoTab = (Equino) this.getObjectSelectOnGrid();
+        
+        List<EquinoServico> eqServicos = equinoTab.getEquinosServico();
+        
+        DefaultListModel delistServicos = new DefaultListModel();
+        
+        for (EquinoServico eqServico : eqServicos) {
+            delistServicos.addElement("Id: " + eqServico.getServicoAdicional().getId()
+                    + " | Nome: " + eqServico.getServicoAdicional().getServico()
+                    + " | Quantidade: " + eqServico.getQtd());
+        }
+        
+        lstServicosAdicional.setModel(delistServicos);
+    }
+
+    
+    
+    private Object getObjectSelectOnGrid() {
+        int rowCliked = grdEquino.getSelectedRow();
+        Object obj = null;
+        if (rowCliked >= 0) {
+            obj = grdEquino.getModel().getValueAt(rowCliked, -1);
+        }
+        return obj;
     }
 
     /**
@@ -41,6 +88,8 @@ public class FrCuidador extends javax.swing.JFrame {
         lstServicosAdicional = new javax.swing.JList<>();
         jScrollPane3 = new javax.swing.JScrollPane();
         lstAlimentos = new javax.swing.JList<>();
+        lblAlimentos = new javax.swing.JLabel();
+        lblServicosAdicionais = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -59,38 +108,44 @@ public class FrCuidador extends javax.swing.JFrame {
 
             }
         ));
+        grdEquino.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                grdEquinoMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(grdEquino);
 
-        lblSubtitulo.setText("Selecione um Equino");
+        lblSubtitulo.setText("Selecione um Equino:");
 
-        lstServicosAdicional.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
+        lstServicosAdicional.setEnabled(false);
         jScrollPane2.setViewportView(lstServicosAdicional);
 
-        lstAlimentos.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
+        lstAlimentos.setEnabled(false);
         jScrollPane3.setViewportView(lstAlimentos);
+
+        lblAlimentos.setText("Alimentos:");
+
+        lblServicosAdicionais.setText("Serviços adicionais:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblSubtitulo)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblSubtitulo)
+                            .addComponent(lblAlimentos))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblServicosAdicionais)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -98,16 +153,28 @@ public class FrCuidador extends javax.swing.JFrame {
                 .addComponent(lblTitulo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblSubtitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblAlimentos)
+                    .addComponent(lblServicosAdicionais))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 252, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void grdEquinoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_grdEquinoMouseClicked
+        if (evt.getClickCount() == 2) {
+            preencherListaAlimentos();
+            preencherListaServicosAdicionais();
+        }
+    }//GEN-LAST:event_grdEquinoMouseClicked
 
     /**
      * @param args the command line arguments
@@ -118,6 +185,8 @@ public class FrCuidador extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel lblAlimentos;
+    private javax.swing.JLabel lblServicosAdicionais;
     private javax.swing.JLabel lblSubtitulo;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JList<String> lstAlimentos;

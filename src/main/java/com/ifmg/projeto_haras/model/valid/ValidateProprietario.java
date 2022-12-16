@@ -38,7 +38,7 @@ public class ValidateProprietario {
         if(limiteFatura.isEmpty()){
             throw new ProprietarioException("Error - Campo vazio: 'limite fatura'.");
         }
-        if(isInteger(limiteFatura)){
+        if(!isInteger(limiteFatura)){
             throw new ProprietarioException("Error - Campo não é inteiro: 'limite fatura'.");
         }
         proprietario.setLimiteFatura(Integer.parseInt(limiteFatura));

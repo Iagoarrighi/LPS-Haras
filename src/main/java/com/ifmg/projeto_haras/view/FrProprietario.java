@@ -6,6 +6,7 @@ package com.ifmg.projeto_haras.view;
 
 import com.ifmg.estudojpa.model.auth.Autenticador;
 import com.ifmg.projeto_haras.controller.ProprietarioController;
+import com.ifmg.projeto_haras.controller.RelFaturasController;
 import com.ifmg.projeto_haras.controller.RelServicosController;
 import javax.swing.JOptionPane;
 
@@ -17,12 +18,14 @@ public class FrProprietario extends javax.swing.JFrame {
 
     ProprietarioController proprietarioController;
     RelServicosController relServicosController;
+    RelFaturasController relFaturasController;
     /**
      * Creates new form FrProprietario
      */
     public FrProprietario() {
         proprietarioController = new ProprietarioController();
         relServicosController = new RelServicosController();
+        relFaturasController = new RelFaturasController();
         initComponents();
         
         proprietarioController.atualizarTabelaEquinos(grdEquinos, Autenticador.getIdLogado());
@@ -142,7 +145,10 @@ public class FrProprietario extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRelServicosActionPerformed
 
     private void btnRelFaturasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRelFaturasActionPerformed
-        // TODO add your handling code here:
+        
+        if(relFaturasController.gerarRelatorio(Autenticador.getIdLogado())){
+            JOptionPane.showMessageDialog(this, "Relatório de Faturas gerado com sucesso.");
+        }
     }//GEN-LAST:event_btnRelFaturasActionPerformed
 
 
