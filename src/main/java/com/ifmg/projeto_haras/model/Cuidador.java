@@ -22,7 +22,7 @@ import lombok.Data;
 @PrimaryKeyJoinColumn(name = "id")
 public class Cuidador extends Pessoa {
     private LocalDate dataInicioContrato;
-    @OneToMany(mappedBy = "cuidador",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cuidador",cascade = CascadeType.PERSIST)
     private List<Equino> equinos = new ArrayList<>();
     
     public Cuidador(){
