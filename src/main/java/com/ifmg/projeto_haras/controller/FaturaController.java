@@ -11,6 +11,7 @@ import com.ifmg.projeto_haras.model.Fatura;
 import com.ifmg.projeto_haras.model.Proprietario;
 import com.ifmg.projeto_haras.model.dao.FaturaDAO;
 import com.ifmg.projeto_haras.model.dao.ProprietarioDAO;
+import com.ifmg.projeto_haras.model.email.FaturaEmail;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -78,6 +79,16 @@ public class FaturaController {
 
                     Fatura fatura = new Fatura(null, totalFatura, proprietario,
                             LocalDate.now().plusDays(30), LocalDate.now());
+
+                    String msg = "Valor: " + fatura.getValor() + "\n"
+                            + "Criação: " + fatura.getCreate_at() + "\n"
+                            + "Vencimento: " + fatura.getDiaMaxPagamento() + "\n"
+                            + "Valor: " + fatura.getValor() + "\n"
+                            + "Proprietario: " + fatura.getProprietario().getCpf();
+
+                    FaturaEmail faturaEmail = new FaturaEmail(
+                            fatura.getProprietario().getEmail(), msg);
+
                     repositorio.save(fatura);
                 }
             }

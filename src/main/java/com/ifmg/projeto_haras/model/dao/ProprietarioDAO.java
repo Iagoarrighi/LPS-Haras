@@ -80,7 +80,7 @@ public class ProprietarioDAO implements IDao{
             return lst.get(0);
         }
     }
-    
+        
     public List<Proprietario> findAll() {
         sql = " SELECT p "
                 + " FROM Proprietario p ";
