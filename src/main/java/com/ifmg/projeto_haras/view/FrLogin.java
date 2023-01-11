@@ -10,6 +10,7 @@ import com.ifmg.projeto_haras.controller.FaturaController;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -18,6 +19,7 @@ import java.util.logging.Logger;
 public class FrLogin extends javax.swing.JFrame {
 
     AutenticadorController autenticadorController;
+
     /**
      * Creates new form FrLogin
      */
@@ -131,45 +133,50 @@ public class FrLogin extends javax.swing.JFrame {
 //        FrVeterinario frVet = new FrVeterinario(this);
 //        frVet.setVisible(true);
 //        this.setVisible(false);
-        
-        String email = edtEmail.getText();
-        String senha = new String(edtSenha.getPassword()).trim();
-        String senhaHash = null;
-        
         try {
-            senhaHash = Autenticador.textToHash(senha);
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(FrLogin.class.getName()).log(Level.SEVERE, null, ex);
+
+            String email = edtEmail.getText();
+            String senha = new String(edtSenha.getPassword()).trim();
+            String senhaHash = null;
+
+            try {
+                senhaHash = Autenticador.textToHash(senha);
+            } catch (NoSuchAlgorithmException ex) {
+                Logger.getLogger(FrLogin.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            if (email.equals("adm@email.com") && senhaHash.equals("a7ec159e76d31f3d869712e677deb4b352e7cb6594838ba3cf4579f2a4490245")) {
+                FrAdministrador frAdm = new FrAdministrador(this);
+                frAdm.setVisible(true);
+                this.setVisible(false);
+            }
+
+            char tipo = autenticadorController.autenticarPorEmailSenha(email, senhaHash);
+            if (tipo == 'c') {
+                FrCuidador frCuidador = new FrCuidador();
+                frCuidador.setVisible(true);
+                this.setVisible(false);;
+            }
+
+            if (tipo == 'v') {
+                FrVeterinario frVet = new FrVeterinario(this);
+                frVet.setVisible(true);
+                this.setVisible(false);
+            }
+
+            if (tipo == 'p') {
+                FrProprietario frProp = new FrProprietario();
+                frProp.setVisible(true);
+                this.setVisible(false);
+            }
+
+            FaturaController faturaController = new FaturaController();
+            faturaController.criarFatura();
+            faturaController.atualizaFaturaNaoPaga();
+            lblErroLogin.setVisible(true);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage());
         }
-        
-        if(email.equals("adm@email.com") && senhaHash.equals("a7ec159e76d31f3d869712e677deb4b352e7cb6594838ba3cf4579f2a4490245")){
-            FrAdministrador frAdm = new FrAdministrador(this);
-            frAdm.setVisible(true);
-            this.setVisible(false);
-        }
-        
-        char tipo = autenticadorController.autenticarPorEmailSenha(email, senhaHash);
-        if(tipo == 'c'){
-            FrCuidador frCuidador = new FrCuidador();
-            frCuidador.setVisible(true);
-            this.setVisible(false);;
-        }
-        
-        if(tipo == 'v'){
-            FrVeterinario frVet = new FrVeterinario(this);
-            frVet.setVisible(true);
-            this.setVisible(false);
-        }
-        
-        if(tipo == 'p'){
-            FrProprietario frProp = new FrProprietario();
-            frProp.setVisible(true);
-            this.setVisible(false);
-        }
-        
-        FaturaController faturaController = new FaturaController();
-        faturaController.criarFatura();
-        lblErroLogin.setVisible(true);
     }//GEN-LAST:event_btnAcessarActionPerformed
 
     /**

@@ -14,6 +14,7 @@ import com.ifmg.projeto_haras.model.dao.ProprietarioDAO;
 import com.ifmg.projeto_haras.model.email.FaturaEmail;
 import java.time.LocalDate;
 import java.util.List;
+import javax.swing.JTable;
 
 /**
  *
@@ -27,6 +28,36 @@ public class FaturaController {
     public FaturaController() {
         this.repositorio = new FaturaDAO();
         this.repProp = new ProprietarioDAO();
+    }
+    
+    public void atualizarTabelaFaturas(JTable grd, Integer id) {
+        Util.jTableShow(grd, new TMProprietarioFatura(repositorio.findAll()), null);
+    }
+    
+    public void atualizarFatura(Fatura fatura) {
+        if(fatura.getFoiPaga() == null || fatura.getFoiPaga() == false){
+            fatura.setFoiPaga(true);
+        }else if(LocalDate.now().isBefore(fatura.getDiaMaxPagamento())
+                && fatura.getFoiPaga() == true){
+            fatura.setFoiPaga(null);
+        }
+        
+        repositorio.save(fatura);
+    }
+    
+    public void atualizaFaturaNaoPaga(){
+        
+        List<Fatura> faturas = repositorio.findAll();
+        
+        for (Fatura fatura : faturas) {
+            LocalDate validFatura = fatura.getCreate_at().plusMonths(1);
+            if(LocalDate.now().isAfter(validFatura)
+                    && fatura.getFoiPaga() == null){
+                fatura.setFoiPaga(false);
+                repositorio.save(fatura);
+            }
+        }
+        
     }
 
     public void criarFatura() {

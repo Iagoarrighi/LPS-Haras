@@ -112,9 +112,9 @@ public class FaturaDAO implements IDao {
         }
     }
     
-    public List<Object> findAll() {
+    public List<Fatura> findAll() {
         sql = " SELECT f "
-                + " FROM fatura f ";
+                + " FROM Fatura f ";
 
         qry = this.entityManager.createQuery(sql);
         

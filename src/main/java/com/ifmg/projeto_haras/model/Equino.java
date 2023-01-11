@@ -47,7 +47,7 @@ public class Equino {
     private Veterinario veterinario;
     @OneToOne(cascade = CascadeType.PERSIST)
     private Baia baia;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "Equino_Alimento"
             , joinColumns = @JoinColumn(name = "equino_id")
             , inverseJoinColumns = @JoinColumn(name = "alimento_id"))

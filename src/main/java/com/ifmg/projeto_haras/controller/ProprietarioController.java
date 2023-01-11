@@ -5,6 +5,7 @@
 package com.ifmg.projeto_haras.controller;
 
 import com.ifmg.projeto_haras.model.Equino;
+import com.ifmg.projeto_haras.model.Fatura;
 import com.ifmg.projeto_haras.model.Proprietario;
 import com.ifmg.projeto_haras.model.dao.ProprietarioDAO;
 import com.ifmg.projeto_haras.model.exceptions.ProprietarioException;
@@ -23,10 +24,27 @@ public class ProprietarioController {
         this.repositorio = new ProprietarioDAO();
     }
     
+    private Integer getIdDoidNome(String idNome) {
+        if (idNome.equals("")) {
+            return null;
+        }
+        String[] novoIdNome = idNome.split(" - ");
+        return Integer.parseInt(novoIdNome[0]);
+    }
+    
     public void atualizarTabelaEquinos(JTable grd, Integer id) {
         Proprietario prop = (Proprietario) repositorio.find(id);
         List<Equino> equinos = prop.getEquinos();
          Util.jTableShow(grd, new TMCadEquino(equinos), null);
+    }
+    
+    public void atualizarTabelaFaturas(JTable grd, String idNome) {
+        
+        Integer id = getIdDoidNome(idNome);
+        
+        Proprietario prop = (Proprietario) repositorio.find(id);
+        List<Fatura> faturas = prop.getFaturas();
+         Util.jTableShow(grd, new TMProprietarioFatura(faturas), null);
     }
     
     public String buscarProprietariosString(){

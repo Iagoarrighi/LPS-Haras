@@ -11,6 +11,7 @@ import com.ifmg.projeto_haras.view.gerenciaveis.IFrEquino;
 import com.ifmg.projeto_haras.view.gerenciaveis.IFrProprietario;
 import com.ifmg.projeto_haras.view.gerenciaveis.IFrServicoAdicional;
 import com.ifmg.projeto_haras.view.gerenciaveis.IFrVeterinario;
+import com.ifmg.projeto_haras.view.gerenciaveis.IFrPagarFatura;
 import javax.swing.JFrame;
 
 /**
@@ -233,7 +234,9 @@ public class FrAdministrador extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void mitemPagarFaturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitemPagarFaturaActionPerformed
-        // TODO add your handling code here:
+        IFrPagarFatura ifrPagarFatura = new IFrPagarFatura();
+        deskPaneAdm.add(ifrPagarFatura);
+        ifrPagarFatura.setVisible(true);
     }//GEN-LAST:event_mitemPagarFaturaActionPerformed
 
 

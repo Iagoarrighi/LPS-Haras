@@ -14,35 +14,36 @@ import com.ifmg.projeto_haras.model.dao.VeterinarioDAO;
  * @author gusta
  */
 public class AutenticadorController {
+
     private CuidadorDAO repCuidador;
     private VeterinarioDAO repVeterinario;
     private ProprietarioDAO repProprietario;
-    
-    public AutenticadorController(){
+
+    public AutenticadorController() {
         repCuidador = new CuidadorDAO();
         repVeterinario = new VeterinarioDAO();
         repProprietario = new ProprietarioDAO();
     }
-    
-    public char autenticarPorEmailSenha(String email, String senha){
+
+    public char autenticarPorEmailSenha(String email, String senha) {
         Integer idCuidador = repCuidador.getCuidadorByEmailAndSenha(email, senha);
-        if(!(idCuidador == 0)){
+        if (!(idCuidador == 0)) {
             Autenticador.setIdLogado(idCuidador);
-            return 'c';           
+            return 'c';
         }
-        
+
         Integer idVeterinario = repVeterinario.getVeterinarioByEmailAndSenha(email, senha);
-        if(!(idVeterinario == 0)){
+        if (!(idVeterinario == 0)) {
             Autenticador.setIdLogado(idVeterinario);
             return 'v';
         }
-        
+
         Integer idProprietario = repProprietario.getProprietarioByEmailAndSenha(email, senha);
-        if(!(idProprietario == 0)){
+        if (!(idProprietario == 0)) {
             Autenticador.setIdLogado(idProprietario);
             return 'p';
         }
         return 'n';
     }
-    
+
 }
