@@ -52,6 +52,7 @@ public class ProprietarioDAO implements IDao{
             this.entityManager.persist(proprietario);
         }
         this.entityManager.getTransaction().commit();
+        this.entityManager.clear();
     }
 
     

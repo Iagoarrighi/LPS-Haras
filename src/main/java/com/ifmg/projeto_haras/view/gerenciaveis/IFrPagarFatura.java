@@ -53,10 +53,10 @@ public class IFrPagarFatura extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         grdFaturas = new javax.swing.JTable();
+        lblTitulo = new javax.swing.JLabel();
 
         setClosable(true);
         setIconifiable(true);
-        setMaximizable(true);
 
         cbxProprietarios.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -84,6 +84,10 @@ public class IFrPagarFatura extends javax.swing.JInternalFrame {
         });
         jScrollPane1.setViewportView(grdFaturas);
 
+        lblTitulo.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTitulo.setText("Pagar Fatura");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -95,11 +99,14 @@ public class IFrPagarFatura extends javax.swing.JInternalFrame {
                     .addComponent(jLabel1)
                     .addComponent(cbxProprietarios, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(62, Short.MAX_VALUE))
+            .addComponent(lblTitulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(71, 71, 71)
+                .addGap(21, 21, 21)
+                .addComponent(lblTitulo)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cbxProprietarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -155,5 +162,6 @@ public class IFrPagarFatura extends javax.swing.JInternalFrame {
     private javax.swing.JTable grdFaturas;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblTitulo;
     // End of variables declaration//GEN-END:variables
 }

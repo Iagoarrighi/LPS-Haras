@@ -164,8 +164,8 @@ public class EquinoController {
     public void excluirRelacionamentoAlimentos(Integer equino_id, Integer alimento_id){
         if (equino_id != null && alimento_id != null) {
             repositorio.deleteRelacionamentoAlimentos(equino_id, alimento_id);
-            Equino equinoO = this.buscarProprietarioPorId(equino_id);
-            equinoO.getAlimentos().clear();
+//            Equino equinoO = this.buscarProprietarioPorId(equino_id);;
+//            equinoO.getAlimentos().clear();
             
         }else{
             throw new EquinoException("Error: Relacionamento inexistente.");

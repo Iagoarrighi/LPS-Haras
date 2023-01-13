@@ -31,7 +31,7 @@ public class ValidateProprietario {
         if (cpf.isEmpty()) {
             throw new ProprietarioException("Error - Campo vazio: 'cpf'.");
         }
-        if (validaCPF(cpf)) {
+        if (!validaCPF(cpf)) {
             throw new ProprietarioException("Error - Campo Inválido: 'cpf'.");
         }
         proprietario.setCpf(cpf);

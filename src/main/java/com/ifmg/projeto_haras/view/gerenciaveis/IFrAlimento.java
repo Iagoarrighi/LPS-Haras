@@ -72,8 +72,6 @@ public class IFrAlimento extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setIconifiable(true);
-        setMaximizable(true);
-        setResizable(true);
 
         lblTitulo.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
         lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);

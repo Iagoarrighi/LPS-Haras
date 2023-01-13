@@ -177,7 +177,6 @@ public class IFrEquino extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setIconifiable(true);
-        setMaximizable(true);
 
         grdEquinos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

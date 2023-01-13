@@ -40,7 +40,9 @@ public class FaturaController {
         }else if(LocalDate.now().isBefore(fatura.getDiaMaxPagamento())
                 && fatura.getFoiPaga() == true){
             fatura.setFoiPaga(null);
-        }
+        }else{
+            fatura.setFoiPaga(false);
+        }        
         
         repositorio.save(fatura);
     }
@@ -50,8 +52,7 @@ public class FaturaController {
         List<Fatura> faturas = repositorio.findAll();
         
         for (Fatura fatura : faturas) {
-            LocalDate validFatura = fatura.getCreate_at().plusMonths(1);
-            if(LocalDate.now().isAfter(validFatura)
+            if(LocalDate.now().isAfter(fatura.getDiaMaxPagamento())
                     && fatura.getFoiPaga() == null){
                 fatura.setFoiPaga(false);
                 repositorio.save(fatura);
@@ -114,7 +115,6 @@ public class FaturaController {
                     String msg = "Valor: " + fatura.getValor() + "\n"
                             + "Criação: " + fatura.getCreate_at() + "\n"
                             + "Vencimento: " + fatura.getDiaMaxPagamento() + "\n"
-                            + "Valor: " + fatura.getValor() + "\n"
                             + "Proprietario: " + fatura.getProprietario().getCpf();
 
                     FaturaEmail faturaEmail = new FaturaEmail(

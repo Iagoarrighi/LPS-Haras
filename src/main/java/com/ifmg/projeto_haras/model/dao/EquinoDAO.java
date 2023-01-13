@@ -35,6 +35,7 @@ public class EquinoDAO implements IDao {
             this.entityManager.persist(equino);
         }
         this.entityManager.getTransaction().commit();
+        this.entityManager.clear();
     }
 
     
